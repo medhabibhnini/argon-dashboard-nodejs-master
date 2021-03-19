@@ -1,0 +1,5 @@
+{
+    "mongoURI": "mongodb+srv://habibhnini:habib123456@cluster0.yx34s.mongodb.net/myFirstDatabase?retryWrites=true ",
+    "jsonWebTokenSecret": "helloWorld"
+  }
+  
