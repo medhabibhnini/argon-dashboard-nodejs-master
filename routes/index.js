@@ -7,17 +7,17 @@ const mountLoginRoutes = require('../features/login/routes');
 const mountLogoutRoutes = require('../features/logout/routes');
 const mountResetPasswordRoutes = require('../features/reset-password/routes');
 const mountProfileRoutes = require('../features/profile/routes');
-
-/*function isAuthenticated(req, res, next) {
-  if (req.user && req.isAuthenticated()) {
+const auth = require('../middleware/auth');
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
     return next();
   }
 
   return res.redirect('/login');
-}*/
+}
 
 /* GET home page. */
-router.get('/', (req, res) => {
+router.get('/dashboard',auth, (req, res) => {
   res.render('pages/dashboard');
 });
 

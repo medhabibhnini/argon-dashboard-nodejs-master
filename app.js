@@ -11,7 +11,8 @@ const RedisStore = require('connect-redis')(session);
 const connectToDatabase = require("./config/connectToDatabase.js");
 const initAuthMiddleware = require('./features/login/init-auth-middleware');
 const indexRouter = require('./routes/index');
-
+const config = require("config");
+//const response = fetch("http://localhost:8000/", { credentials: "include"});
 const redisStoreConfig = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
@@ -36,23 +37,26 @@ app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(express.static(path.join(__dirname, staticFolder)));
+
 
 const { COOKIE_EXPIRATION_MS } = process.env;
 app.use(
   session({
-    store: redisStore,
-    secret: 'keyboard cat',
-    name: process.env.SESSION_COOKIE_NAME,
-    resave: false,
-    saveUninitialized: true,
+    name: "token", //name to be put in "key" field in postman etc
+    secret: config.get("jsonWebTokenSecret"),
+    resave: true,
+    saveUninitialized: false,
+    store: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      expires: Date.now() + parseInt(COOKIE_EXPIRATION_MS, 10),
-      maxAge: parseInt(COOKIE_EXPIRATION_MS, 10),
-    },
+      maxAge: 900000,
+      sameSite: false,
+      secure: true
+    }
   })
 );
 
