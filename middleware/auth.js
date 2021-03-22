@@ -10,6 +10,7 @@ try {
     const verified = jwt.verify(token,config.get("jsonWebTokenSecret"))
      console.log(verified);
     req.user = verified.user;
+        //const userid = verified.user.id
      next();
 } catch (error) {
         console.log(error)

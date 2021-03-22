@@ -1,13 +1,15 @@
 const express = require('express');
-
+const { wrap } = require('async-middleware');
 const router = express.Router();
-
+const User = require("../schemas/User");
 const mountRegisterRoutes = require('../features/register/routes');
 const mountLoginRoutes = require('../features/login/routes');
 const mountLogoutRoutes = require('../features/logout/routes');
 const mountResetPasswordRoutes = require('../features/reset-password/routes');
 const mountProfileRoutes = require('../features/profile/routes');
+const getUserByMiddleware = require("../functions/userFunctions/getUserByMiddleware");
 const auth = require('../middleware/auth');
+const loadPage = require('./load-page');
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -17,8 +19,12 @@ function isAuthenticated(req, res, next) {
 }
 
 /* GET home page. */
-router.get('/dashboard',auth, (req, res) => {
-  res.render('pages/dashboard');
+router.get('/dashboard',auth,wrap(loadPage), (req, res ) => {
+let userInfo
+  
+  console.log(user);
+  res.render('pages/dashboard',{userInfo : userInfo});
+ 
 });
 
 router.get('/icons', (req, res) => {
