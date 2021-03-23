@@ -8,6 +8,8 @@ const mountLogoutRoutes = require('../features/logout/routes');
 const mountResetPasswordRoutes = require('../features/reset-password/routes');
 const mountProfileRoutes = require('../features/profile/routes');
 const getUserByMiddleware = require("../functions/userFunctions/getUserByMiddleware");
+const mountUpdateRoutes = require('../features/editprofile/routes')
+const changeUserData = require('../functions/userFunctions/changeUserData');
 const auth = require('../middleware/auth');
 const loadPage = require('./load-page');
 function isAuthenticated(req, res, next) {
@@ -39,10 +41,13 @@ router.get('/tables', (req, res) => {
   res.render('pages/tables');
 });
 
+
 mountRegisterRoutes(router);
 mountLoginRoutes(router);
 mountLogoutRoutes(router);
 mountResetPasswordRoutes(router);
 mountProfileRoutes(router);
+mountUpdateRoutes(router);
+
 
 module.exports = router;

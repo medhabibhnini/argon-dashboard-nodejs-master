@@ -1,9 +1,10 @@
 const { validationResult } = require("express-validator");
 const User = require("../../schemas/User");
-
+/*
 module.exports = async (req, res) => {
   try {
     const { changeUserData } = req.body;
+    console.log(changeUserData);
     const errors = validationResult(req);
     let user = await User.findById(req.user.id).select("-password");
 
@@ -14,20 +15,35 @@ module.exports = async (req, res) => {
 
     //userDataToChange -> name,lastName,userName
 
-    let userDataToChange = req.params.user_data_to_change.toString();
+    let userDataToChange = req.params.user_data_to_change;
+/*
+    if (user[userDataToChange] === changeUserData)
+      return res.status(401).json("This is the same data that is already in database");
+*//*
+    user[userDataToChange] = changeUserData;
 
-    if (user[userDataToChange] === changeUserData.toString())
-      return res
-        .status(401)
-        .json("This is the same data that is already in database");
+    await user.update();
+    console.log(user);
 
-    user[userDataToChange] = changeUserData.toString();
-
-    await user.save();
-
-    res.json("Data is changed");
+    //res.json("Data is changed");
+    res.redirect('/profile');
   } catch (error) {
     console.error(error);
     return res.status(500).json("Server Error...");
   }
 };
+*/
+module.exports = async (req, res) => {
+  User.findById(req.user.id)
+  .then(user => {
+      user.name = req.body.name;
+      user.lastName = req.body.lastName;
+      user.userName = req.body.userName;
+     // events.prize = Number(req.body.prize);
+      user.avatar = req.body.avatar;
+      user.save()
+          .then(() => res.redirect('/profile'))
+          .catch(err => res.status(400).json('Error: ' + err));
+  })
+  .catch(err => res.status(400).json('Error: ' + err));
+}

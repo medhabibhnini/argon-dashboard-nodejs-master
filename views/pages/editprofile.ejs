@@ -10,52 +10,7 @@
     <!-- Page content -->
     <div class="container-fluid mt--7">
       <div class="row">
-        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-          <div class="card card-profile shadow">
-            <div class="row justify-content-center">
-              <div class="col-lg-3 order-lg-2">
-                <div class="card-profile-image">
-                  <a href="#">
-                    <img src="<%= userInfo.avatar %>" class="rounded-circle">
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-              <div class="d-flex justify-content-between">
-             
-               
-                   
-                  </div>
-              
-            </div>
-            <div class="card-body pt-0 pt-md-4">
-              <div class="row">
-                <div class="col">
-                  <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                   
-                  </div>
-                </div>
-              </div>
-              <div class="text-center">
-                <h3>
-                    <%= userInfo && userInfo.email  %><span class="font-weight-light"></span>
-                </h3>
-                <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i><%= userInfo.lastName %> <%= userInfo.name %>
-                </div>
-                <div class="h5 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>Solution Manager 
-                </div>
-                <div>
-                  <i class="ni education_hat mr-2"></i>University of Computer Science
-                </div>
-                <hr class="my-4" />
-                
-              </div>
-            </div>
-          </div>
-        </div>
+        
         <div class="col-xl-8 order-xl-1">
           <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
@@ -69,7 +24,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="update_profile" method="POST">
+              <form action="/profile/update?_method=PUT" method="POST">
                 <h6 class="heading-small text-muted mb-4">User information</h6>
                 <div class="pl-lg-4">
                   <% if (locals.messages && messages.success) { %>
@@ -100,7 +55,7 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">LastName</label>
+                        <label class="form-control-label" for="input-name">Name</label>
                         <input type="text" id="input-name" class="form-control form-control-alternative" name="lastName" placeholder="LastName" value="<%= locals.userInfo && locals.userInfo.lastName %>">
                         <% if (locals.messages && messages.errors && messages.errors.name) { %>
                           <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
@@ -118,7 +73,7 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">username</label>
+                        <label class="form-control-label" for="input-name">Name</label>
                         <input type="text" id="input-name" class="form-control form-control-alternative" name="userName" placeholder="Name" value="<%= locals.userInfo && locals.userInfo.userName %>">
                         <% if (locals.messages && messages.errors && messages.errors.name) { %>
                           <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
@@ -127,8 +82,8 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">Avatar</label>
-                        <input type="file" id="avatar" class="form-control form-control-alternative" name="avatar" placeholder="image" value="<%= locals.userInfo && locals.userInfo.avatar %>">
+                        <label class="form-control-label" for="input-name">Name</label>
+                        <input type="file" id="input-name" class="form-control form-control-alternative" name="avatar" placeholder="Name" value="<%= locals.userInfo && locals.userInfo.avatar %>">
                         <% if (locals.messages && messages.errors && messages.errors.name) { %>
                           <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
                         <% } %>

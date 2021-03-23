@@ -11,8 +11,10 @@ const RedisStore = require('connect-redis')(session);
 const connectToDatabase = require("./config/connectToDatabase.js");
 const initAuthMiddleware = require('./features/login/init-auth-middleware');
 const indexRouter = require('./routes/index');
+const userRouter = require('./routes/users');
 const config = require("config");
-//const response = fetch("http://localhost:8000/", { credentials: "include"});
+const multer = require('multer');
+const ejs = require('ejs');
 const redisStoreConfig = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
@@ -53,7 +55,7 @@ app.use(
     saveUninitialized: false,
     store: false,
     cookie: {
-      maxAge: 900000,
+      maxAge: 36000000,
       sameSite: false,
       secure: true
     }
@@ -73,10 +75,19 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRouter);
-
+app.use('/users',userRouter);
 // catch 404 and forward to error handler
 app.use((req, res) => {
   res.status(404).render('pages/404');
 });
-
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/uploads');
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${Date.now()}_${file.originalname.replace(/\s+/g, '-')}`;
+    cb(null, fileName);
+  },
+});
+const upload = multer({ storage }).single('avatar')
 module.exports = app;

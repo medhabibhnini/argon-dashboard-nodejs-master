@@ -7,6 +7,7 @@ const getUsers = require("../functions/userFunctions/getUsers");
 const getUserById = require("../functions/userFunctions/getUserById");
 const registerUser = require("../functions/userFunctions/registerUser");
 const loginUser = require("../functions/userFunctions/loginUser");
+const auth = require("../middleware/auth");
 
 const {
   registerUserValidator,
@@ -21,7 +22,7 @@ const changeUserData = require("../functions/userFunctions/changeUserData");
 const checkActualPassword = require("../functions/userFunctions/checkActualPassword");
 const changeUserPassword = require("../functions/userFunctions/changeUserPassword");
 
-router.get("/", authentication, getUserByMiddleware);
+router.get("/", auth, getUserByMiddleware);
 
 router.get("/get_user_by_email/:user_email", getUserByEmail);
 
@@ -41,7 +42,7 @@ router.put(
 
 router.put(
   "/change_user_data/:user_data_to_change",
-  authentication,
+  auth,
   changeUserDataValidator,
   changeUserData
 );
