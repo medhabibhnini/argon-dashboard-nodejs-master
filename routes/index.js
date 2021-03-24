@@ -11,6 +11,7 @@ const getUserByMiddleware = require("../functions/userFunctions/getUserByMiddlew
 const mountUpdateRoutes = require('../features/editprofile/routes')
 const changeUserData = require('../functions/userFunctions/changeUserData');
 const auth = require('../middleware/auth');
+const passport = require('passport')
 const loadPage = require('./load-page');
 const multer = require('multer');
 function isAuthenticated(req, res, next) {
@@ -20,6 +21,21 @@ function isAuthenticated(req, res, next) {
 
   return res.redirect('/login');
 }
+// @desc Auth with Google
+// @route GET /auth/google
+router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}))
+
+// @desc Google auth callback 
+// @route GET /auth/google/callback
+
+router.get(
+  '/google/callback', 
+  passport.authenticate('google', {failureRedirect: '/'}), 
+  (req, res) => {
+    res.redirect('/dashboard')
+  }
+)
+
 
 /* GET home page. */
 router.get('/dashboard',auth,wrap(loadPage), (req, res ) => {
