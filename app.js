@@ -80,14 +80,5 @@ app.use('/users',userRouter);
 app.use((req, res) => {
   res.status(404).render('pages/404');
 });
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/uploads');
-  },
-  filename: (req, file, cb) => {
-    const fileName = `${Date.now()}_${file.originalname.replace(/\s+/g, '-')}`;
-    cb(null, fileName);
-  },
-});
-const upload = multer({ storage }).single('avatar')
+
 module.exports = app;

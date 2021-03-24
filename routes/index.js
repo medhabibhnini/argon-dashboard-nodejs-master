@@ -12,6 +12,7 @@ const mountUpdateRoutes = require('../features/editprofile/routes')
 const changeUserData = require('../functions/userFunctions/changeUserData');
 const auth = require('../middleware/auth');
 const loadPage = require('./load-page');
+const multer = require('multer');
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -29,25 +30,39 @@ let userInfo
  
 });
 
-router.get('/icons', (req, res) => {
+router.get('/icons',auth,wrap(loadPage), (req, res) => {
   res.render('pages/icons');
 });
 
-router.get('/maps', (req, res) => {
+router.get('/maps',auth,wrap(loadPage), (req, res) => {
   res.render('pages/maps');
 });
 
-router.get('/tables', (req, res) => {
+router.get('/tables',auth,wrap(loadPage), (req, res) => {
   res.render('pages/tables');
 });
-
-
+/*const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/uploads');
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${Date.now()}_${file.originalname}`;
+    cb(null, fileName);
+  },
+});
+const upload = multer({ storage }).single('avatar');
+router.post('/upload',upload,(req,res)=>{
+  console.log(req.file);
+  res.send("image uploaded");
+})
+*/
 mountRegisterRoutes(router);
 mountLoginRoutes(router);
 mountLogoutRoutes(router);
 mountResetPasswordRoutes(router);
 mountProfileRoutes(router);
 mountUpdateRoutes(router);
+
 
 
 module.exports = router;
