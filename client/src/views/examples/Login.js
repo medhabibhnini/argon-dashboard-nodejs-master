@@ -101,7 +101,7 @@ class Login extends React.Component {
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
+                        <small>Or sign in with crekjnkjndentials</small>
                       </div>
                       <Form role="form">
                         <FormGroup className="mb-3">

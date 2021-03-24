@@ -15,6 +15,7 @@ const userRouter = require('./routes/users');
 const config = require("config");
 const multer = require('multer');
 const ejs = require('ejs');
+const passport = require('passport');
 const redisStoreConfig = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
@@ -46,6 +47,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, staticFolder)));
 
 
+//config passport
+require ('./config/passport')(passport)
+
+
 const { COOKIE_EXPIRATION_MS } = process.env;
 app.use(
   session({
@@ -61,6 +66,10 @@ app.use(
     }
   })
 );
+
+//passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 initAuthMiddleware(app);
 
