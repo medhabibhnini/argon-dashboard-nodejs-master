@@ -17,7 +17,7 @@
                   <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
                   <span class="btn-inner--text">Github</span>
                 </a>
-                <a href="#" class="btn btn-neutral btn-icon">
+                <a href="/google" class="btn btn-neutral btn-icon">
                   <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
                   <span class="btn-inner--text">Google</span>
                 </a>
@@ -88,13 +88,13 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" name="confirmpassword" placeholder="Password" type="password" required>
+                    <input class="form-control" name="confirmpassword" placeholder="Confirm Password" type="password" required>
                   </div>
                   <% if (locals.messages && messages.errors && messages.errors.password) { %>
                     <strong class="invalid-feedback" style="display: block"><%= messages.errors.password %></strong>
                   <% } %>
                 </div>
-                <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div>
+        
                 <div class="row my-4">
                   <div class="col-12">
                     <div class="custom-control custom-control-alternative custom-checkbox">
