@@ -11,6 +11,6 @@ module.exports = router => {
   router.get('/register', wrap(loadPage));
 
   //router.post('/register');
-  router.post("/register", registerUserValidator, registerUser);
+  router.post("/register",  registerUserValidator, registerUser);
   return router;
 };

@@ -4,10 +4,12 @@ const gravatar = require("gravatar");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const fetch = require('node-fetch');
+const { stringify } = require('querystring');
 
 module.exports = async (req, res , next) => {
   try {
-    let { name, lastName, userName, email, password } = req.body;
+    let { name, lastName, userName, email, password, } = req.body;
     let user = await User.findOne({ email }).select("-password");
     let fetchedUserNameFromDatabase = await User.findOne({ userName }).select(
       "-password"
@@ -36,7 +38,7 @@ module.exports = async (req, res , next) => {
       password,
       avatar,
     });
-
+ 
     const salt = await bcryptjs.genSalt(10);
 
     let hashedPassword = await bcryptjs.hash(password, salt);
@@ -64,5 +66,7 @@ module.exports = async (req, res , next) => {
     console.error(error.message);
     return res.status(500).send("Server error.");
   }
+  
   res.redirect('/login')
+  
 };

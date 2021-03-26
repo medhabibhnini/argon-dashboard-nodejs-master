@@ -1,4 +1,9 @@
 <body class="bg-default">
+  <head>
+  
+   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</head>
   <div class="main-content">
     <!-- Navbar -->
     <% include ../partials/auth/navbar %>
@@ -27,7 +32,7 @@
               <div class="text-center text-muted mb-4">
                 <small>Or sign up with credentials</small>
               </div>
-              <form role="form" action="register" method="POST">
+              <form id="Form" role="form" action="register" method="POST" onsubmit="return validateForm()">
                 <div class="form-group">
                   <div class="input-group input-group-alternative mb-3">
                     <div class="input-group-prepend">
@@ -105,19 +110,45 @@
                     </div>
                   </div>
                 </div>
+                
                 <% if (locals.messages && locals.messages.databaseError) { %>
                   <strong class="invalid-feedback" style="display: block"><%= messages.databaseError %></strong>
                 <% } %>
+                  <div class="g-recaptcha" align="center" data-sitekey="6LcU2owaAAAAAKJDpgEKrltSGfwMN_2Trj6RX8TO"></div>
+          
                 <div class="text-center">
                   <button class="btn btn-primary mt-4">Create account</button>
                 </div>
+                
               </form>
-            </div>
+          
+            <script>
+              function validateForm() {
+              var errFlag = false;
+              var errMsg = "";
+              var captcha=grecaptcha.getResponse();
+
+              if(captcha == "") {
+                errMsg += "Please confirm captcha.\n";
+                errFlag = true;
+                }
+              
+              if(!errFlag) {
+                return true;
+              }else {
+              alert(errMsg);
+              return false;
+            alert(grecaptcha.getResponse());
+              }
+            }
+            </script>
+       </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+    
   <!-- Footer -->
   <% include ../partials/auth/footer %>
 
