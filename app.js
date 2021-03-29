@@ -15,6 +15,7 @@ const userRouter = require('./routes/users');
 const config = require("config");
 const multer = require('multer');
 const ejs = require('ejs');
+const swal= require ('sweetalert'); 
 const passport = require('passport');
 const redisStoreConfig = {
   host: process.env.REDIS_HOST,

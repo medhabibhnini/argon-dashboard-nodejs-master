@@ -2,6 +2,7 @@
   <head>
   
    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 </head>
   <div class="main-content">
@@ -9,7 +10,7 @@
     <% include ../partials/auth/navbar %>
     <!-- Header -->
     <% include ../partials/auth/header %>
-    <!-- Page content -->
+        <!-- Page content -->
     <div class="container mt--8 pb-5">
       <!-- Table -->
       <div class="row justify-content-center">
@@ -82,9 +83,13 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" name="password" placeholder="Password" type="password" required>
+                    <label for="password"></label>
+                    <input class="form-control" name="password" placeholder="Password" id="password" type="password" onkeyup="passfunction()" required>
                   </div>
+                  
                   <% if (locals.messages && messages.errors && messages.errors.password) { %>
+
+                 
                     <strong class="invalid-feedback" style="display: block"><%= messages.errors.password %></strong>
                   <% } %>
                 </div>
@@ -93,14 +98,19 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" name="confirmpassword" placeholder="Password" type="password" required>
+                    <input class="form-control" name="confirmpassword" placeholder="Password" type="password" id="confirmpassword" onkeyup="testpass()" required>
                   </div>
                   <% if (locals.messages && messages.errors && messages.errors.password) { %>
+
                     <strong class="invalid-feedback" style="display: block"><%= messages.errors.password %></strong>
                   <% } %>
                 </div>
-                <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div>
-                <div class="row my-4">
+                <div class="text-muted font-italic">
+                  <h5>Password must contain:</h5>
+                  <h6 id="lengthh" class="invalid-password" >6 to 12 characters</h6>
+                  <h6 id="capital" class="invalid-password" >At least 1 capital letter</h6>
+                  
+                </div>                <div class="row my-4">
                   <div class="col-12">
                     <div class="custom-control custom-control-alternative custom-checkbox">
                       <input class="custom-control-input" id="customCheckRegister" type="checkbox" required>
@@ -115,32 +125,71 @@
                   <strong class="invalid-feedback" style="display: block"><%= messages.databaseError %></strong>
                 <% } %>
                   <div class="g-recaptcha" align="center" data-sitekey="6LcU2owaAAAAAKJDpgEKrltSGfwMN_2Trj6RX8TO"></div>
-          
+                  <h6 id="match" class="invalid-password"> Passwords do not match</h6>
                 <div class="text-center">
                   <button class="btn btn-primary mt-4">Create account</button>
                 </div>
-                
+               
               </form>
           
             <script>
-              function validateForm() {
+              var capital = document.getElementById("capital");
               var errFlag = false;
-              var errMsg = "";
+              var password= document.getElementById("password");
+              var passwordconf= document.getElementById("confirmpassword");
+              var match = document.getElementById("match");
+              var lengthh= document.getElementById("lengthh")
+              var upperCaseLetters = /[A-Z]/g;
+              match.style.display="none";
+              function validateForm() {
+              
               var captcha=grecaptcha.getResponse();
-
+              
               if(captcha == "") {
-                errMsg += "Please confirm captcha.\n";
+                swal("Please confirm captcha", {
+          className: "red-bg",
+  });   
                 errFlag = true;
+                
                 }
               
               if(!errFlag) {
                 return true;
               }else {
-              alert(errMsg);
               return false;
-            alert(grecaptcha.getResponse());
               }
             }
+            function passfunction()
+            {
+              match.style.display="none";
+              if(password.value.length >= 6 && password.value.length <= 12) {
+    lengthh.classList.remove("invalid-password");
+    lengthh.classList.add("text-success");
+  } else {
+    lengthh.classList.remove("text-success");
+    lengthh.classList.add("invalid-password");
+    errFlag = true;
+
+  }
+if(password.value.match(upperCaseLetters)) {
+    capital.classList.remove("invalid-password");
+    capital.classList.add("text-success");
+  } else {
+    capital.classList.remove("text-success");
+    capital.classList.add("invalid-password");
+    errFlag = true;
+
+  }
+            }
+  function testpass()
+{                match.style.display="none";
+  if(password.value != passwordconf.value )
+  {
+    match.style.display="block";
+    errFlag = true;
+  }
+}
+  
             </script>
        </div>
           </div>
