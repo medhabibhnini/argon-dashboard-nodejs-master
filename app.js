@@ -46,10 +46,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, staticFolder)));
 
-
 //config passport
 require ('./config/passport')(passport)
-
+require ('./config/passportfb')(passport)
 
 const { COOKIE_EXPIRATION_MS } = process.env;
 app.use(

@@ -11,9 +11,10 @@ const getUserByMiddleware = require("../functions/userFunctions/getUserByMiddlew
 const mountUpdateRoutes = require('../features/editprofile/routes')
 const changeUserData = require('../functions/userFunctions/changeUserData');
 const auth = require('../middleware/auth');
-const passport = require('passport')
+const passport = require('passport');
 const loadPage = require('./load-page');
 const multer = require('multer');
+const passportfb = require('../config/passportfb');
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -36,6 +37,20 @@ router.get(
   }
 )
 
+// @desc Auth with Facebook
+// @route GET facebook
+router.get('/facebook', passport.authenticate('facebook', { scope : 'email' }))
+
+// @desc Facebook auth callback 
+// @route GET facebook/callback
+
+router.get(
+  '/facebook/callback', 
+  passport.authenticate('facebook', {failureRedirect: '/'}), 
+  (req, res) => {
+    res.redirect('/dashboard')
+  }
+)
 
 /* GET home page. */
 router.get('/dashboard',auth,wrap(loadPage), (req, res ) => {
