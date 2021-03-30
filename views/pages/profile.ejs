@@ -1,4 +1,8 @@
 <body>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+  </head>
   <!-- Sidenav -->
   <% include ../partials/sidebar %>
   <!-- Main content -->
@@ -69,7 +73,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="update_profile" method="POST">
+              <form action="update_profile" method="POST" onsubmit="return verification()" >
                 <h6 class="heading-small text-muted mb-4">User information</h6>
                 <div class="pl-lg-4">
                   <% if (locals.messages && messages.success) { %>
@@ -140,10 +144,68 @@
                   </div>
                 </div>
               </form>
+              <script>
+                function verification()
+                {
+                  var errFlag = false;
+        
+        swal( {
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this imaginary file!",
+          dangerMode: true,
+          icon: "warning",
+          buttons: {
+            cancel: "Cancel",
+            catch: {
+              text: "Okay",
+              value: "ok",
+            },
+          },
+        })
+        
+        .then((value) => {
+          if (value == "ok") {
+            swal("Your data has been updated!", {
+              icon: "success",
+              });
+            errFlag = false;
+            console.log("errFlag");
+             console.log("false")
+            } else {
+            swal("Your data will not be updated");
+            console.log("khrejna");
+            errFlag = true;
+          }
+        });
+        if(!errFlag) {
+                return true;
+                console.log("dkhalna fel if:")
+              }else {
+              return false;
+              }
+        /*
+            switch(errFlag)
+            {
+              case true:
+              console.log("mouch bech ysob")
+              return false;  
+              break;
+        
+              case false:
+              console.log("bech ysob");
+              return true;
+              break;
+            
+            }*/
+
+                   
+           }
+              </script>
             </div>
           </div>
         </div>
       </div>
+      
       <!-- Footer -->
       <% include ../partials/footer %>
     </div>
