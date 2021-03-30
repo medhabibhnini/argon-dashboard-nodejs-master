@@ -30,7 +30,7 @@ import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import EditProfile from "views/examples/EditProfile.js";
 import Forum from "views/examples/Forum.js";
-
+import Posts from "views/examples/Posts.js";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
@@ -63,6 +63,11 @@ ReactDOM.render(
         path="/Edit-profile"
         exact
         render={props => <EditProfile {...props} />}
+      />
+       <Route
+        path="/posts-page"
+        exact
+        render={props => <Posts {...props} />}
       />
       <Redirect to="/" />
     </Switch>

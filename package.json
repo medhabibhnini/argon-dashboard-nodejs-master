@@ -68,7 +68,7 @@
     "pino": "^5.11.1",
     "pm2": "^3.2.9",
     "postcss-flexbugs-fixes": "^3.3.1",
-    "sweetalert2": "^10.15.6"
+    "sweetalert2": "^10.15.7"
   },
   "devDependencies": {
     "eslint": "^5.13.0",

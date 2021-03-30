@@ -178,7 +178,12 @@ class DemoNavbar extends React.Component {
                     <DropdownMenu>
                       
                       <DropdownItem to="/forum-page" tag={Link}>
-                        Forum
+                        Create a post
+                      </DropdownItem>
+                    
+                    
+                      <DropdownItem to="/posts-page" tag={Link}>
+                    Posts
                       </DropdownItem>
                     
                     </DropdownMenu>
