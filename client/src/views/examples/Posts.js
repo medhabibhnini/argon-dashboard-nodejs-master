@@ -63,28 +63,36 @@ const Posts = ( ) => {
               <Card className="card-body mt--300">
                     <Row className="justify-content-center">
                       <Col lg="9">
-                        <h3 align="center">Posts </h3>
-                        <p>
+                        <h3 align="center" class="text-primary font-weight-700">Posts </h3>
+                        <p align="center" class="font-weight-500">
                         Here, you can find all the users' posts, so you can see, like and comment them
                         </p>
                         <hr></hr>
-                        <h5>Posts</h5>
+
                         <br></br>
                         <div class="card-lift--hover shadow border-0 card" >
                         <div class="py-5 card-body">
-                       <div class="icon icon-shape icon-shape-primary rounded-circle mb-4">
-                        <i class="ni ni-istanbul"></i>
-                        </div>
-                        <h6 class="text-primary text-uppercase">Build Something</h6>
+                        <div  align="center">
+                        <img alt="..." class="img-fluid rounded-circle shadow" src="/argon-design-system-react/static/media/team-2-800x800.dcfcf3b7.jpg" width="150px" align="center">
+                      </img>
+                      </div>
+                        <h6 class="text-primary text-uppercase"align="center">Janna Doe</h6>
+                        
                         <p class="description mt-3">Argon is a great free UI package based on Bootstrap 4 that includes the most important components and features.</p>
+                        <hr></hr>
                         <div>
                             <span class="mr-1 badge badge-primary badge-pill">
                             <a href="#pablo" class="nav-link-icon nav-link">
                                 <i class="ni ni-favourite-28"></i>
-                                <span class="nav-link-inner--text d-lg-none">Favorites</span>
+                                <span class="nav-link-inner--text d-lg-none"> </span>
                             </a>
+                            
                             </span>
-                            <hr></hr>
+                        
+                         
+                            
+                        <br></br>
+                        <br></br>
                             <form>
                             <div class="form-group">
                                 <input placeholder="Your comment..." type="text" class="form-control"></input>
