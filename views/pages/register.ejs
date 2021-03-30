@@ -109,7 +109,7 @@
                   <strong class="invalid-feedback" style="display: block"><%= messages.databaseError %></strong>
                 <% } %>
                 <div class="text-center">
-                  <button class="btn btn-primary mt-4">Create account</button>
+                  <button onclick="sweetalertclick()" class="btn btn-primary mt-4">Create account</button>
                 </div>
               </form>
             </div>
@@ -118,6 +118,36 @@
       </div>
     </div>
   </div>
+  <script src="sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script>
+    function sweetalertclick()
+    {
+    Swal.fire({
+  title: 'Are you sure?',
+  text: 'You will not be able to recover this imaginary file!',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, delete it!',
+  cancelButtonText: 'No, keep it'
+}).then((result) => {
+  if (result.value) {
+    Swal.fire(
+      'Deleted!',
+      'Your imaginary file has been deleted.',
+      'success'
+    )
+  // For more information about handling dismissals please visit
+  // https://sweetalert2.github.io/#handling-dismissals
+  } else if (result.dismiss === Swal.DismissReason.cancel) {
+    Swal.fire(
+      'Cancelled',
+      'Your imaginary file is safe :)',
+      'error'
+    )
+  }
+})
+    }
+  </script>
   <!-- Footer -->
   <% include ../partials/auth/footer %>
 
