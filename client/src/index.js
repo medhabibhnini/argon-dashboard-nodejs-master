@@ -29,6 +29,8 @@ import Login from "views/examples/Login.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import EditProfile from "views/examples/EditProfile.js";
+import Forum from "views/examples/Forum.js";
+
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
@@ -45,6 +47,13 @@ ReactDOM.render(
         exact
         render={props => <Profile {...props} />}
       />
+      <Route path="/login-page" exact render={props => <Login {...props} />} />
+      <Route
+        path="/forum-page"
+        exact
+        render={props => <Forum {...props} />}
+      />
+      
       <Route
         path="/register-page"
         exact

@@ -169,15 +169,16 @@ class DemoNavbar extends React.Component {
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
+                 
                   <UncontrolledDropdown nav  >
                     <DropdownToggle nav>
                       <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">Profile</span>
+                      <span className="nav-link-inner--text">Forum</span>
                     </DropdownToggle>
                     <DropdownMenu>
                       
-                      <DropdownItem to="/profile-page" tag={Link}>
-                        Profile
+                      <DropdownItem to="/forum-page" tag={Link}>
+                        Forum
                       </DropdownItem>
                     
                     </DropdownMenu>
