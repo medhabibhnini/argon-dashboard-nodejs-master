@@ -147,7 +147,7 @@
               <script>
                 function verification()
                 {
-                  var errFlag = false;
+                  var errFlag;
         
         swal( {
           title: "Are you sure?",
@@ -169,34 +169,33 @@
               icon: "success",
               });
             errFlag = false;
-            console.log("errFlag");
-             console.log("false")
+        
             } else {
             swal("Your data will not be updated");
-            console.log("khrejna");
             errFlag = true;
           }
         });
+        /*
         if(!errFlag) {
                 return true;
                 console.log("dkhalna fel if:")
               }else {
               return false;
               }
-        /*
-            switch(errFlag)
+        */
+            switch(!errFlag)
             {
-              case true:
+              case false:
               console.log("mouch bech ysob")
               return false;  
               break;
         
-              case false:
+              case true:
               console.log("bech ysob");
               return true;
               break;
             
-            }*/
+            }
 
                    
            }
