@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React ,{useState} from "react";
 
 // reactstrap components
 import { Button, Card, Container, Row, Col } from "reactstrap";
@@ -24,18 +24,45 @@ import { Link } from "react-router-dom";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
+import { useHistory } from "react-router-dom";
 
-class Profile extends React.Component {
-  componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
-  }
-  render() {
+const Profile =()=>{
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  let history = useHistory();
+/*
+  async function   getUser(e)
+  {
+try{
+e.preventDefault();
+const loginData ={
+  name,
+lastName,
+  userName,
+
+  email,
+
+};
+const [user,setUser]=useState("");
+
+console.log(loginData);
+await axios.get("http://localhost:8000/users").then(
+res => (setUser(res.data))
+
+
+}))
+
+}catch(err)
+{
+  console.error(err);
+}
+
+  }*/
+
     return (
-      <>
+    <>
         <DemoNavbar />
-        <main className="profile-page" ref="main">
+        <main className="profile-page">
           <section className="section-profile-cover section-shaped my-0">
             {/* Circles background */}
             <div className="shape shape-style-1 shape-default alpha-4">
@@ -91,7 +118,7 @@ class Profile extends React.Component {
                           to="/Edit-profile" tag={Link}
                           size="sm"
                         >
-                           Profile 
+                           Profile
                         </Button>
                         <Button
                           className="float-right"
@@ -164,6 +191,6 @@ class Profile extends React.Component {
       </>
     );
   }
-}
+
 
 export default Profile;

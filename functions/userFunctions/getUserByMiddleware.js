@@ -5,8 +5,9 @@ module.exports = async (req, res) => {
     let user = await User.findById(req.user.id).select("-password");
    //res.json(user);
    // console.log(user);
-  
-    
+   return res.json(user);
+
+
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Server error.");
