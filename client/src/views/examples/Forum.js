@@ -63,13 +63,14 @@ const Forum = ( ) => {
               <Card className="card-body mt--300">
                     <Row className="justify-content-center">
                       <Col lg="9">
-                        <h3 align="center">Forum </h3>
-                        <p>
+                        <h3 class="text-primary font-weight-700" align="center">Forum </h3>
+                        <p class="font-weight-500" align="center">
                         Feel free to express yourself in this part of the website, so all the users can see what do you have in your 
                         mind
                         </p>
                         <hr></hr>
-                        <h5>Create a new post</h5>
+                        <h5 class="font-weight-700" align="center">Create a new post</h5>
+                        <br></br>
                         <form>
                         <div class="form-group">
                             
