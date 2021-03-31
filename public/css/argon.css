@@ -2640,6 +2640,13 @@ textarea.form-control
     border-color: #93e7c3; 
     background-color: #93e7c3;
 }
+.invalid-password
+{
+    color:red
+}
+.invalid-password{
+    color:green
+}
 
 .was-validated .custom-control-input:valid ~ .valid-feedback,
 .was-validated .custom-control-input:valid ~ .valid-tooltip,
