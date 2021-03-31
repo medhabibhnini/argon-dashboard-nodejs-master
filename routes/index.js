@@ -39,7 +39,7 @@ router.get(
 
 // @desc Auth with Facebook
 // @route GET facebook
-router.get('/facebook', passport.authenticate('facebook', { scope : 'email' }))
+router.get('/facebook', passport.authenticate('facebook', { scope : 'email'}))
 
 // @desc Facebook auth callback 
 // @route GET facebook/callback
