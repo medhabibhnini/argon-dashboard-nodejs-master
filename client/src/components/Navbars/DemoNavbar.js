@@ -1,19 +1,13 @@
 /*!
-
 =========================================================
 * Argon Design System React - v1.1.0
 =========================================================
-
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2020 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
 * Coded by Creative Tim
-
 =========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
 import React from "react";
 import { Link } from "react-router-dom";
@@ -50,13 +44,11 @@ const DemoNavbar = () =>{
     collapseClasses: "",
     collapseOpen: false
   };
-
   onExiting = () => {
     this.setState({
       collapseClasses: "collapsing-out"
     });
   };
-
   onExited = () => {
     this.setState({
       collapseClasses: ""
@@ -92,9 +84,8 @@ const DemoNavbar = () =>{
                 <div className="navbar-collapse-header">
                   <Row>
                     <Col className="collapse-brand" xs="6">
-                      
-                      <link to="">
-                      <img
+                      <Link to="/">
+                        <img
                           alt="..."
                           src={require("assets/img/brand/argon-react.png")}
                         />
@@ -119,12 +110,13 @@ const DemoNavbar = () =>{
                       <DropdownItem to="/landing-page" tag={Link}>
                         Landing
                       </DropdownItem>
+                      <DropdownItem to="/profile-page" tag={Link}>
                         Profile
                       </DropdownItem>
                       <DropdownItem to="/login-page" tag={Link}>
                         Login
                       </DropdownItem>
-                      
+                      <DropdownItem to="/register-page" tag={Link}>
                         Register
                       </DropdownItem>
                     </DropdownMenu>
@@ -138,13 +130,13 @@ const DemoNavbar = () =>{
                       <DropdownItem to="/landing-page" tag={Link}>
                         Landing
                       </DropdownItem>
-                      
+                      <DropdownItem to="/profile-page" tag={Link}>
                         Profile
                       </DropdownItem>
                       <DropdownItem to="/login-page" tag={Link}>
                         Login
                       </DropdownItem>
-                     
+                      <DropdownItem to="/register-page" tag={Link}>
                         Register
                       </DropdownItem>
                     </DropdownMenu>
@@ -155,41 +147,23 @@ const DemoNavbar = () =>{
                       <span className="nav-link-inner--text">Forum</span>
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem to="/landing-page" tag={Link}>
-                        Landing
+                      <DropdownItem to="/forum-page" tag={Link}>
+                        Make a post
                       </DropdownItem>
-                     
-                        Profile
+                      <DropdownItem to="/posts-page" tag={Link}>
+                        Posts
                       </DropdownItem>
-                      <DropdownItem to="/login-page" tag={Link}>
-                        Login
-                      </DropdownItem>
-                     
-                        Register
-                      </DropdownItem>
-                    </DropdownMenu>
+                      </DropdownMenu>
                   </UncontrolledDropdown>
-                 
                   <UncontrolledDropdown nav  >
                     <DropdownToggle nav>
                       <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">Forum</span>
+                      <span className="nav-link-inner--text">Profile</span>
                     </DropdownToggle>
                     <DropdownMenu>
 
-                      
-                      <DropdownItem to="/forum-page" tag={Link}>
-                        Create a post
-                      </DropdownItem>
-                    
-                    
-
-                    Posts
-
-
-
+                      <DropdownItem to="/profile-page" tag={Link}>
                         Profile
-
                       </DropdownItem>
 
                     </DropdownMenu>
@@ -200,7 +174,7 @@ const DemoNavbar = () =>{
                   <NavItem>
                     <NavLink
                       className="nav-link-icon"
-
+                      href="https://www.facebook.com/creativetim"
                       id="tooltip333589074"
                       target="_blank"
                     >

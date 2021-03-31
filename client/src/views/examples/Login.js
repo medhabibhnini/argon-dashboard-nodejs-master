@@ -1,26 +1,8 @@
-/*!
-
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import axios from "axios";
 
-import CheckButton from "react-validation/build/button";
 
 import { loginUser } from "../../actions/auths/loginUser";
 import { connect } from "react-redux";
@@ -84,12 +66,10 @@ await axios.post("http://localhost:8000/login",loginData).then
     email: "",
     password: "",
   });
-
   const { email, password } = userData;
   const onChange = (e) =>
     setUserData({ ...userData, [e.target.name]: e.target.value });
     let history = useHistory();
-
     console.log(userData);
     const handleLogin = (e) => {
 if(loginUser(userData))
@@ -238,7 +218,8 @@ else history.push("/login-page");*/
           </section>
         </main>
         <SimpleFooter />
-      </>
+      
+</>
     );
 
 }
@@ -246,3 +227,5 @@ else history.push("/login-page");*/
 
 
 export default Login;
+
+
