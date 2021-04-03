@@ -91,7 +91,7 @@ class Profile extends React.Component {
                           to="/Edit-profile" tag={Link}
                           size="sm"
                         >
-                           Profile 
+                           Profile
                         </Button>
                         <Button
                           className="float-right"
@@ -152,6 +152,7 @@ class Profile extends React.Component {
                         <a href="#pablo" onClick={e => e.preventDefault()}>
                           Show more
                         </a>
+                        <button onClick={Login}>Imen</button>
                       </Col>
                     </Row>
                   </div>

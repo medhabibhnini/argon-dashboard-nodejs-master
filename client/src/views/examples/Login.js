@@ -44,7 +44,55 @@ class Login extends React.Component {
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
   }
+<<<<<<< Updated upstream
   render() {
+=======
+};
+const Login = () => {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  let history = useHistory();
+
+  async function   login(e)
+  {
+try{
+e.preventDefault();
+const loginData ={
+  email,
+  password,
+};
+console.log(loginData);
+await axios.post("http://localhost:8000/login",loginData).then
+{
+history.push("/profile-page");
+
+}
+
+}catch(err)
+{
+  console.error(err);
+}
+
+  }
+  /*const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = userData;
+  const onChange = (e) =>
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+    let history = useHistory();
+
+    console.log(userData);
+    const handleLogin = (e) => {
+if(loginUser(userData))
+{history.push("/profile-page");}
+else history.push("/login-page");*/
+
+
+
+>>>>>>> Stashed changes
     return (
       <>
         <DemoNavbar />

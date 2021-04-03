@@ -44,8 +44,13 @@ module.exports = async (req, res) => {
   //token for express cookie
 const token = jwt.sign(payload,config.get("jsonWebTokenSecret"));
 res.cookie('token',token,{maxAge:36000000,httpOnly:true}).send();
+<<<<<<< Updated upstream
 
  res.redirect('/dashboard');
+=======
+return(payload);
+ //res.redirect('/dashboard');
+>>>>>>> Stashed changes
   } catch (error) {
     console.error(error.message);
 
