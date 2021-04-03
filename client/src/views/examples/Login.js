@@ -53,7 +53,8 @@ const required = (value) => {
       </div>
     );
   }
-};
+
+  
 const Login = () => {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
@@ -70,7 +71,7 @@ const loginData ={
 console.log(loginData);
 await axios.post("http://localhost:8000/login",loginData).then
 {
- history.push("/profile-page");
+history.push("/profile-page");
 
 }
 
@@ -95,6 +96,7 @@ await axios.post("http://localhost:8000/login",loginData).then
 if(loginUser(userData))
 {history.push("/profile-page");}
 else history.push("/login-page");*/
+
 
 
 

@@ -39,6 +39,12 @@ const token = jwt.sign(payload,config.get("jsonWebTokenSecret"));
 res.cookie('token',token,{maxAge:36000000,httpOnly:true}).send();
 
  //res.redirect('/dashboard');
+
+ res.redirect('/dashboard');
+
+return(payload);
+ //res.redirect('/dashboard');
+
   } catch (error) {
     console.error(error.message);
 

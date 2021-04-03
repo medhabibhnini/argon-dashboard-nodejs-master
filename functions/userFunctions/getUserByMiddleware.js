@@ -8,6 +8,9 @@ module.exports = async (req, res) => {
    return res.json(user);
 
 
+
+   return res.json(user);
+
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Server error.");
