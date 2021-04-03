@@ -3,6 +3,7 @@ require('dotenv').config({
 });
 
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
@@ -29,16 +30,10 @@ app.use(expressLayouts);
 app.use(express.json());
 
 app.use(cookieParser());
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, staticFolder)));
-
-
-//config passport
-require ('./config/passport')(passport)
-
-
-const { COOKIE_EXPIRATION_MS } = process.env;
 app.use(
   session({
     name: "token", //name to be put in "key" field in postman etc
@@ -53,6 +48,19 @@ app.use(
     }
   })
 );
+app.use(
+cors ({
+  origin:["http://localhost:3000"],
+  credentials :true,
+})
+
+)
+//config passport
+require ('./config/passport')(passport)
+
+
+
+
 
 //passport middleware
 app.use(passport.initialize())
