@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
@@ -33,22 +33,40 @@ import {
   Row,
   Col
 } from "reactstrap";
-
+import { registerUser } from "../../actions/auths/registerUser";
+import { connect } from "react-redux";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
+import { useHistory } from "react-router-dom";
 
-class Register extends React.Component {
-  componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
+const Register = ({ registerUser, error })=> {
+  const [hasPasswordShowed, setShowPassword] = useState(false);
+
+  const [userData, setUserData] = useState({
+    name: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    password: "",
+  });
+  let history = useHistory();
+
+  const { name, lastName, userName, email, password } = userData;
+  const onChange = (e) =>
+  setUserData({ ...userData, [e.target.name]: e.target.value });
+  const handleRegister = (e) => {
+
+    if(registerUser(userData))
+    {
+      history.push("/login-page");
+    } else       history.push("/register-page");
+
   }
-  render() {
     return (
       <>
         <DemoNavbar />
-        <main ref="main">
+        <main >
           <section className="section section-shaped section-lg">
             <div className="shape shape-style-1 bg-gradient-default">
               <span />
@@ -111,7 +129,27 @@ class Register extends React.Component {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Name" type="text" />
+                            <Input placeholder="Name" type="text" name="name"  onChange={(e) => onChange(e)}/>
+                          </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-hat-3" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input placeholder="Lastname" type="text" name="lastName" onChange={(e) => onChange(e)}/>
+                          </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-hat-3" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input placeholder="username" type="text" name="userName"   onChange={(e) => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -121,7 +159,7 @@ class Register extends React.Component {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" />
+                            <Input placeholder="Email" type="email" name="email"  onChange={(e) => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -133,9 +171,16 @@ class Register extends React.Component {
                             </InputGroupAddon>
                             <Input
                               placeholder="Password"
-                              type="password"
+                              type={hasPasswordShowed ? "text" : "password"}
                               autoComplete="off"
+                              name="password"
+                              onChange={(e) => onChange(e)}
+
                             />
+                              <i
+            onClick={() => setShowPassword(!hasPasswordShowed)}
+            className={hasPasswordShowed ? "fas fa-eye" : "fas fa-eye-slash"}
+          ></i>
                           </InputGroup>
                         </FormGroup>
                         <div className="text-muted font-italic">
@@ -176,6 +221,7 @@ class Register extends React.Component {
                             className="mt-4"
                             color="primary"
                             type="button"
+                            onClick={() => handleRegister()}
                           >
                             Create account
                           </Button>
@@ -192,6 +238,11 @@ class Register extends React.Component {
       </>
     );
   }
-}
 
-export default Register;
+
+
+  const mapStateToProps = (state) => ({
+    error: state.auth.errors,
+  });
+
+  export default connect(mapStateToProps, { registerUser })(Register);

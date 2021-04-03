@@ -39,8 +39,8 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-class DemoNavbar extends React.Component {
-
+const DemoNavbar = () =>{
+/*
   componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
@@ -62,8 +62,8 @@ class DemoNavbar extends React.Component {
       collapseClasses: ""
     });
   };
+*/
 
-  render() {
     return (
       <>
         <header className="header-global">
@@ -85,9 +85,9 @@ class DemoNavbar extends React.Component {
               <UncontrolledCollapse
                 toggler="#navbar_global"
                 navbar
-                className={this.state.collapseClasses}
+              /*  className={this.state.collapseClasses}
                 onExiting={this.onExiting}
-                onExited={this.onExited}
+                onExited={this.onExited}*/
               >
                 <div className="navbar-collapse-header">
                   <Row>
@@ -108,7 +108,7 @@ class DemoNavbar extends React.Component {
                   </Row>
                 </div>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-                 
+
                   <UncontrolledDropdown nav>
                     <DropdownToggle nav>
                       <i className="ni ni-collection d-lg-none mr-1" />
@@ -185,7 +185,7 @@ class DemoNavbar extends React.Component {
                       <DropdownItem to="/posts-page" tag={Link}>
                     Posts
                       </DropdownItem>
-                    
+
                     </DropdownMenu>
                   </UncontrolledDropdown>
 
@@ -277,6 +277,6 @@ class DemoNavbar extends React.Component {
       </>
     );
   }
-}
+
 
 export default DemoNavbar;

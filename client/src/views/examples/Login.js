@@ -15,9 +15,16 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from 'react-router-dom';
+import axios from "axios";
 
-// reactstrap components
+import CheckButton from "react-validation/build/button";
+
+import { loginUser } from "../../actions/auths/loginUser";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   Button,
   Card,
@@ -38,17 +45,63 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
-class Login extends React.Component {
-  componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
   }
-  render() {
+};
+const Login = () => {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+  let history = useHistory();
+
+  async function   login(e)
+  {
+try{
+e.preventDefault();
+const loginData ={
+  email,
+  password,
+};
+console.log(loginData);
+await axios.post("http://localhost:8000/login",loginData).then
+{
+ history.push("/profile-page");
+
+}
+
+}catch(err)
+{
+  console.error(err);
+}
+
+  }
+  /*const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = userData;
+  const onChange = (e) =>
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+    let history = useHistory();
+
+    console.log(userData);
+    const handleLogin = (e) => {
+if(loginUser(userData))
+{history.push("/profile-page");}
+else history.push("/login-page");*/
+
+
+
     return (
       <>
         <DemoNavbar />
-        <main ref="main">
+        <main>
           <section className="section section-shaped section-lg">
             <div className="shape shape-style-1 bg-gradient-default">
               <span />
@@ -73,7 +126,6 @@ class Login extends React.Component {
                           className="btn-neutral btn-icon"
                           color="default"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
                         >
                           <span className="btn-inner--icon mr-1">
                             <img
@@ -103,7 +155,8 @@ class Login extends React.Component {
                       <div className="text-center text-muted mb-4">
                         <small>Or sign in with crekjnkjndentials</small>
                       </div>
-                      <Form role="form">
+                      <form role="form"onSubmit={login}
+ >
                         <FormGroup className="mb-3">
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
@@ -111,7 +164,8 @@ class Login extends React.Component {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" />
+                            <Input placeholder="Email" type="email" name="email" onChange={(e) => setEmail(e.target.value)}
+/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -125,6 +179,9 @@ class Login extends React.Component {
                               placeholder="Password"
                               type="password"
                               autoComplete="off"
+                              name="password"
+                              onChange={(e) => setPassword(e.target.value)}
+
                             />
                           </InputGroup>
                         </FormGroup>
@@ -142,15 +199,17 @@ class Login extends React.Component {
                           </label>
                         </div>
                         <div className="text-center">
-                          <Button
+                          <button
                             className="my-4"
                             color="primary"
-                            type="button"
-                          >
-                            Sign in
-                          </Button>
+                            type="submit"
+
+                        >
+                        Sign in
+                          </button>
                         </div>
-                      </Form>
+
+                      </form>
                     </CardBody>
                   </Card>
                   <Row className="mt-3">
@@ -181,7 +240,9 @@ class Login extends React.Component {
         <SimpleFooter />
       </>
     );
-  }
+
 }
+
+
 
 export default Login;
