@@ -1,30 +1,17 @@
 /*!
-
 =========================================================
 * Argon Design System React - v1.1.0
 =========================================================
-
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2020 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
 * Coded by Creative Tim
-
 =========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from 'react-router-dom';
-import axios from "axios";
+import React, { Component } from "react";
 
-import CheckButton from "react-validation/build/button";
-
-import { loginUser } from "../../actions/auths/loginUser";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+// reactstrap components
 import {
   Button,
   Card,
@@ -44,74 +31,65 @@ import {
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
-
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/auths/loginUser";
+import classnames from "classnames";
+import {Session} from 'bc-react-session';
+class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      email: "habibhnini@gmail.com",
+      password: "Habib123",
+      errors: {}
+    };
   }
-};
-const Login = () => {
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-  let history = useHistory();
-
-  async function   login(e)
-  {
-try{
-e.preventDefault();
-const loginData ={
-  email,
-  password,
-};
-console.log(loginData);
-await axios.post("http://localhost:8000/login",loginData).then
-{
- history.push("/profile-page");
-
-}
-
-}catch(err)
-{
-  console.error(err);
-}
-
+  componentDidMount() {
+    // If logged in and user navigates to Login page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/admin");
+    }
   }
-  /*const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-  });
 
-  const { email, password } = userData;
-  const onChange = (e) =>
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-    let history = useHistory();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/admin");
+    }
 
-    console.log(userData);
-    const handleLogin = (e) => {
-if(loginUser(userData))
-{history.push("/profile-page");}
-else history.push("/login-page");*/
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
 
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
 
+  };
 
+ 
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    this.props.loginUser(userData);
+ 
+  };
+  render() {
+    const { errors } = this.state;
     return (
       <>
         <DemoNavbar />
-        <main>
+        <main ref="main">
           <section className="section section-shaped section-lg">
             <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
+    
             </div>
             <Container className="pt-lg-7">
               <Row className="justify-content-center">
@@ -126,6 +104,7 @@ else history.push("/login-page");*/
                           className="btn-neutral btn-icon"
                           color="default"
                           href="#pablo"
+               
                         >
                           <span className="btn-inner--icon mr-1">
                             <img
@@ -139,7 +118,7 @@ else history.push("/login-page");*/
                           className="btn-neutral btn-icon ml-1"
                           color="default"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                        
                         >
                           <span className="btn-inner--icon mr-1">
                             <img
@@ -155,8 +134,7 @@ else history.push("/login-page");*/
                       <div className="text-center text-muted mb-4">
                         <small>Or sign in with crekjnkjndentials</small>
                       </div>
-                      <form role="form"onSubmit={login}
- >
+                      <Form  onSubmit={this.onSubmit}>
                         <FormGroup className="mb-3">
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
@@ -164,8 +142,16 @@ else history.push("/login-page");*/
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" name="email" onChange={(e) => setEmail(e.target.value)}
-/>
+                            <Input 
+                           
+                           onChange={this.onChange}
+                           value={this.state.email}
+                           error={errors.email}
+                           id="email"
+                           type="email"
+                              placeholder="Email" 
+                          
+                              />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -176,12 +162,15 @@ else history.push("/login-page");*/
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input
+                           
+                           onChange={this.onChange}
+                            value={this.state.password}
+                             error={errors.password}
+                            id="password"
+                            type="password"
                               placeholder="Password"
-                              type="password"
+                              
                               autoComplete="off"
-                              name="password"
-                              onChange={(e) => setPassword(e.target.value)}
-
                             />
                           </InputGroup>
                         </FormGroup>
@@ -199,17 +188,16 @@ else history.push("/login-page");*/
                           </label>
                         </div>
                         <div className="text-center">
-                          <button
+                          <Button
                             className="my-4"
                             color="primary"
                             type="submit"
-
-                        >
-                        Sign in
-                          </button>
+                            
+                          >
+                            Sign in
+                          </Button>
                         </div>
-
-                      </form>
+                      </Form>
                     </CardBody>
                   </Card>
                   <Row className="mt-3">
@@ -217,7 +205,7 @@ else history.push("/login-page");*/
                       <a
                         className="text-light"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                     
                       >
                         <small>Forgot password?</small>
                       </a>
@@ -226,7 +214,7 @@ else history.push("/login-page");*/
                       <a
                         className="text-light"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                      
                       >
                         <small>Create new account</small>
                       </a>
@@ -240,9 +228,20 @@ else history.push("/login-page");*/
         <SimpleFooter />
       </>
     );
-
+  }
 }
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
 
-
-export default Login;
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

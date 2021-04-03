@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import { Component } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -34,8 +35,19 @@ import {
   Container,
   Media,
 } from "reactstrap";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../actions/auths/logOut";
+import {Session} from 'bc-react-session';
 
-const AdminNavbar = (props) => {
+class AdminNavbar extends Component {
+  onLogoutClick = e => {
+    e.preventDefault();
+    this.props.logoutUser();
+    Session.destroy();
+  };
+  render() {
+    const { user } = this.props.auth;
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -44,7 +56,7 @@ const AdminNavbar = (props) => {
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
             to="/"
           >
-            {props.brandText}
+            {this.props.brandText}
           </Link>
           <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
             <FormGroup className="mb-0">
@@ -99,7 +111,7 @@ const AdminNavbar = (props) => {
                   <span>Support</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem href="#pablo" onClick={this.onLogoutClick}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>
@@ -111,5 +123,18 @@ const AdminNavbar = (props) => {
     </>
   );
 };
+}
+AdminNavbar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
-export default AdminNavbar;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(AdminNavbar);
+

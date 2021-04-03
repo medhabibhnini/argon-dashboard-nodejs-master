@@ -34,20 +34,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, staticFolder)));
-app.use(
-  session({
-    name: "token", //name to be put in "key" field in postman etc
-    secret: config.get("jsonWebTokenSecret"),
-    resave: true,
-    saveUninitialized: false,
-    store: false,
-    cookie: {
-      maxAge: 36000000,
-      sameSite: false,
-      secure: true
-    }
-  })
-);
+
+
 app.use(
 cors ({
   origin:["http://localhost:3000"],

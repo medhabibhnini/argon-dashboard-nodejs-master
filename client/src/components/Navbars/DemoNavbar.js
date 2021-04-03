@@ -189,7 +189,7 @@ const DemoNavbar = () =>{
                 <NavItem>
                 <NavLink
                   className="nav-link-icon"
-                  to="/auth/register"
+                  to="/register-page"
                   tag={Link}
                 >
                   <i className="ni ni-circle-08" />

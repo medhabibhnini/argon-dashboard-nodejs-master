@@ -18,6 +18,12 @@ import { Provider } from "react-redux";
 import { userLoaded } from "./actions/auths/userLoaded";
 import setAuthenticationToken from "./middleware/setAuthenticationToken";
 import IsLoggedInRoute from "./routes/IsLoggedInRoute";
+import "assets/plugins/nucleo/css/nucleo.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "assets/scss/argon-dashboard-react.scss";
+import AdminLayout from "layouts/Admin.js";
+
+
 
 if (localStorage.getItem("token")) {
   setAuthenticationToken(localStorage.getItem("token"));
@@ -27,11 +33,10 @@ const App = () => {
     store.dispatch(userLoaded());
   }, []);
 
-
   return (
 
     <BrowserRouter>
-    <Provider  store={store}>
+    <Provider store={store}>
 
           <Switch>
           <Route path="/" exact render={props => <Index {...props} />} />
@@ -56,12 +61,13 @@ const App = () => {
         render={props => <EditProfile {...props} />}
       />
 
-<Route
+      <Route
         path="/reset-password"
         exact
         render={props => <ResetPassword {...props} />}
       />
-
+      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+      <Redirect from="/back" to="/admin/index" />
               <Redirect to="/" />
 
 </Switch>

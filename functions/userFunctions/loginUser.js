@@ -33,12 +33,17 @@ module.exports = async (req, res) => {
         id: user._id,
       },
     };
+    jwt.sign(
+      payload,
+      config.get("jsonWebTokenSecret"),
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
 
-  //token for express cookie
-const token = jwt.sign(payload,config.get("jsonWebTokenSecret"));
-res.cookie('token',token,{maxAge:36000000,httpOnly:true}).send();
 
- //res.redirect('/dashboard');
   } catch (error) {
     console.error(error.message);
 

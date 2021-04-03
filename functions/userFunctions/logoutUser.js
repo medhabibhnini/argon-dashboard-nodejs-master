@@ -9,9 +9,13 @@ const { JSONCookie } = require("cookie-parser");
 const session = require("express-session");
 
 module.exports = (req,res)=>{
-    res.cookie('token',"",{
-        httpOnly: true,
-        expires: new Date(0)
-    })
-    res.redirect('/login')
+  jwt.sign(
+        "",
+       "",
+        { expiresIn:  Date.now() },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
 }

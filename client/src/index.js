@@ -35,40 +35,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
 import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
 
-ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/" exact render={props => <Index {...props} />} />
-     
-      <Route
-        path="/landing-page"
-        exact
-        render={props => <Landing {...props} />}
-      />
-      <Route path="/login-page" exact render={props => <Login {...props} />} />
-      <Route
-        path="/profile-page"
-        exact
-        render={props => <Profile {...props} />}
-      />
-      <Route
-        path="/register-page"
-        exact
-        render={props => <Register {...props} />}
-      />
-      <Route
-        path="/Edit-profile"
-        exact
-        render={props => <EditProfile {...props} />}
-      />
-    
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Redirect from="/back" to="/admin/index" />
-      <Redirect to="/" />
-    </Switch>
-  </BrowserRouter>,
+
+ 
 import App from "App";
 ReactDOM.render(
   <App/>,

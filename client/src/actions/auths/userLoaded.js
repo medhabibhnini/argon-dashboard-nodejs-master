@@ -1,20 +1,24 @@
 import axios from "axios";
-import { USER_IS_LOADED, AUTH_ERROR } from "../../constants/auth.constants";
+import { USER_IS_LOADED, AUTH_ERROR , PROFILE_LOADING } from "../../constants/auth.constants";
 import setAuthenticationToken from "../../middleware/setAuthenticationToken";
-export const userLoaded = () => async (dispatch) => {
-  if (localStorage.getItem("token")) {
-    setAuthenticationToken(localStorage.getItem("token"));
+
+
+
+export const userLoaded = () =>  dispatch => {
+  console.log(localStorage.token);
+  if (localStorage.token) {
+      setAuthenticationToken(localStorage.token);
   }
   try {
-    const res = await axios.get("http://localhost:8000/users");
-    dispatch({
-      type: USER_IS_LOADED,
-      payload: res.data,
-    });
+      const res =  axios.get('http://localhost:8000/users/');
+      dispatch({
+          type: USER_IS_LOADED,
+          payload: res.data
+          
+      });
   } catch (error) {
-    console.log(error.message);
-    dispatch({
-      type: AUTH_ERROR,
-    });
+      dispatch({
+          type: AUTH_ERROR
+      });
   }
-};
+}
