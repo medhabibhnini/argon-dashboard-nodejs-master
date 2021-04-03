@@ -1,4 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://habibhnini:habib123456@cluster0.yx34s.mongodb.net/myFirstDatabase?retryWrites=true",
+    "mongoURI": "mongodb+srv://imen:imenmanai12@cluster0.ntiqj.mongodb.net/myFirstDatabase?retryWrites=true",
     "jsonWebTokenSecret": "helloWorld"
 }
