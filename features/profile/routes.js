@@ -1,14 +1,16 @@
 const { wrap } = require('async-middleware');
 
-const requestBodyValidation = require('./commands/verify-request-body');
-const updateUserInfo = require('./commands/update-user-info');
-
 const loadPage = require('./commands/load-page');
-
+const auth = require('../../middleware/auth');
+const changeUserData = require('../../functions/userFunctions/changeUserData');
+const getUserById = require("../../functions/userFunctions/getUserById");
 module.exports = (router, middlewares = []) => {
-  router.get('/profile', middlewares.map(middleware => wrap(middleware)), wrap(loadPage));
 
-  router.post('/update-profile-info', wrap(requestBodyValidation), wrap(updateUserInfo));
+
+  router.get('/profile/',auth, wrap(loadPage));
+
+  //router.put( "/change_user_data/:user_data_to_change", auth, changeUserData);
+  
 
   return router;
 };

@@ -4,7 +4,7 @@ const gravatar = require("gravatar");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-
+const Swal = require('sweetalert2');
 module.exports = async (req, res , next) => {
   try {
     let { name, lastName, userName, email, password } = req.body;

@@ -26,6 +26,11 @@ let UserSchema = mongoose.Schema({
   avatar: {
     type: String,
   },
+  googleId: {
+    type: String,
+    required:false
+}
+
 });
 
 module.exports = UserSchema = mongoose.model("user", UserSchema);

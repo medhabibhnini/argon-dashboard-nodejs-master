@@ -16,52 +16,45 @@
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                   <a href="#">
-                    <img src="img/theme/team-4-800x800.jpg" class="rounded-circle">
+                    <img src="/uploads/<%= userInfo.avatar %>" class="rounded-circle">
                   </a>
                 </div>
               </div>
             </div>
             <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
               <div class="d-flex justify-content-between">
-                <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
-                <a href="#" class="btn btn-sm btn-default float-right">Message</a>
-              </div>
+             
+               
+                   
+                  </div>
+              
             </div>
             <div class="card-body pt-0 pt-md-4">
               <div class="row">
                 <div class="col">
                   <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                    <div>
-                      <span class="heading">22</span>
-                      <span class="description">Friends</span>
-                    </div>
-                    <div>
-                      <span class="heading">10</span>
-                      <span class="description">Photos</span>
-                    </div>
-                    <div>
-                      <span class="heading">89</span>
-                      <span class="description">Comments</span>
+                    <div class="col-4 text-right">
+           
+                     
                     </div>
                   </div>
                 </div>
               </div>
               <div class="text-center">
                 <h3>
-                    <%= locals.userInfo && locals.userInfo.name || 'Jessica Jones' %><span class="font-weight-light">, 27</span>
+                    <%= userInfo && userInfo.email  %><span class="font-weight-light"></span>
                 </h3>
                 <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>Bucharest, Romania
+                  <i class="ni location_pin mr-2"></i><%= userInfo.lastName %> <%= userInfo.name %>
                 </div>
                 <div class="h5 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+                  <i class="ni business_briefcase-24 mr-2"></i>Solution Manager 
                 </div>
                 <div>
-                  <i class="ni education_hat mr-2"></i>University of Computer Science
+                
                 </div>
                 <hr class="my-4" />
-                <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-                <a href="#">Show more</a>
+                
               </div>
             </div>
           </div>
@@ -79,13 +72,13 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="/update-profile-info" method="POST">
+              <form action="update_profile" method="POST" enctype="multipart/form-data">
                 <h6 class="heading-small text-muted mb-4">User information</h6>
                 <div class="pl-lg-4">
                   <% if (locals.messages && messages.success) { %>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                       <%= messages.success %>
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
                         <span aria-hidden="true">×</span>
                       </button>
                     </div>
@@ -102,7 +95,16 @@
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">Name</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="Name" value="<%= locals.userInfo && locals.userInfo.name %>">
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="Name" value="<%= locals.userInfo && locals.userInfo.name %>"  enctype="false">
+                        <% if (locals.messages && messages.errors && messages.errors.name) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
+                        <% } %>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">LastName</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="lastName" placeholder="LastName" value="<%= locals.userInfo && locals.userInfo.lastName %>"  enctype="false">
                         <% if (locals.messages && messages.errors && messages.errors.name) { %>
                           <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
                         <% } %>
@@ -111,17 +113,38 @@
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-email">Email address</label>
-                        <input type="email" id="input-email" class="form-control form-control-alternative" name="username" placeholder="jesse@example.com" value="<%= locals.userInfo && locals.userInfo.email %>">
-                        <% if (locals.messages && messages.errors && messages.errors.username) { %>
-                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.username %></strong>
+                        <input type="email" id="input-email" class="form-control form-control-alternative" name="email" placeholder="jesse@example.com" value="<%= locals.userInfo && locals.userInfo.email %>" >
+                        <% if (locals.messages && messages.errors && messages.errors.email) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.email %></strong>
                         <% } %>
                       </div>
                     </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">username</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="userName" placeholder="Name" value="<%= locals.userInfo && locals.userInfo.userName %>" >
+                        <% if (locals.messages && messages.errors && messages.errors.userName) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.userName %></strong>
+                        <% } %>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">image</label>
+                        <input type="file" id="avatar" class="file" name="avatar" placeholder="image" value="<%= userInfo.avatar %>" >
+                        <% if (locals.messages && messages.errors && messages.errors.userName) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.userName %></strong>
+                        <% } %>
+                      </div>
+                    </div>
+                   
+                
                     <div class="col-lg-12 text-center">
-                      <button class="btn btn-success mt-4 mb-4">Save</button>
+                      <input type="submit" value="save" class="btn btn-success mt-4 mb-4">
                     </div>
                   </div>
                 </div>
+              
               </form>
             </div>
           </div>
