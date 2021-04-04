@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
+
 
 // reactstrap components
 import {
@@ -33,35 +33,63 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { registerUser } from "../../actions/auths/registerUser";
-import { connect } from "react-redux";
+
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
-import { useHistory } from "react-router-dom";
+import React, {useState} from 'react'
+import axios from 'axios'
+import {showErrMsg, showSuccessMsg} from '../utils/notification/Notification'
+import {isEmpty, isEmail, isLength, isMatch} from '../utils/validation/Validation'
 
-const Register = ({ registerUser, error })=> {
-  const [hasPasswordShowed, setShowPassword] = useState(false);
 
-  const [userData, setUserData] = useState({
-    name: "",
-    lastName: "",
-    userName: "",
-    email: "",
-    password: "",
-  });
-  let history = useHistory();
+const initialState = {
+  name: '',
+  userName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  cf_password: '',
+  err: '',
+  success: ''
+}
+function Register () {
+  const [user, setUser] = useState(initialState)
 
-  const { name, lastName, userName, email, password } = userData;
-  const onChange = (e) =>
-  setUserData({ ...userData, [e.target.name]: e.target.value });
-  const handleRegister = (e) => {
+  const {name, email, password,cf_password,userName,lastName, err, success} = user
 
-    if(registerUser(userData))
-    {
-      history.push("/login-page");
-    } else       history.push("/register-page");
+  const handleChangeInput = e => {
+      const {name, value} = e.target
+      setUser({...user, [name]:value, err: '', success: ''})
+  }
 
+
+  const handleSubmit = async e => {
+      e.preventDefault()
+      if(isEmpty(name) || isEmpty(password) || isEmpty(lastName) || isEmpty(userName))
+              return setUser({...user, err: "Please fill in all fields.", success: ''})
+
+      if(!isEmail(email))
+          return setUser({...user, err: "Invalid emails.", success: ''})
+
+      if(isLength(password))
+          return setUser({...user, err: "Password must be at least 6 characters.", success: ''})
+      
+      if(!isMatch(password, cf_password))
+          return setUser({...user, err: "Password did not match.", success: ''})
+          const body = JSON.stringify({name, email, password ,userName,lastName })
+          console.log(body);
+      try {
+          const res = await axios.post('http://localhost:5000/user/register', 
+              body
+          )
+
+          setUser({...user /*, err: '', success: res.data.msg*/})
+      } catch (err) {
+          //err.response.data.msg && 
+          setUser({...user/*, err: err.response.data.msg, success: ''*/})
+          console.log(user)
+      }
   }
     return (
       <>
@@ -69,14 +97,7 @@ const Register = ({ registerUser, error })=> {
         <main >
           <section className="section section-shaped section-lg">
             <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
+   
             </div>
             <Container className="pt-lg-7">
               <Row className="justify-content-center">
@@ -121,7 +142,10 @@ const Register = ({ registerUser, error })=> {
                       <div className="text-center text-muted mb-4">
                         <small>Or sign up with credentials</small>
                       </div>
-                      <Form role="form">
+                      {err && showErrMsg(err)}
+                      {success && showSuccessMsg(success)}
+
+                      <Form onSubmit={handleSubmit}>
                         <FormGroup>
                           <InputGroup className="input-group-alternative mb-3">
                             <InputGroupAddon addonType="prepend">
@@ -129,7 +153,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Name" type="text" name="name"  onChange={(e) => onChange(e)}/>
+                            <Input placeholder="Name" type="text" name="name" value={name} onChange={handleChangeInput}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -139,7 +163,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Lastname" type="text" name="lastName" onChange={(e) => onChange(e)}/>
+                            <Input placeholder="Lastname" id="lastName" type="text" name="lastName" value={lastName} onChange={handleChangeInput}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -149,7 +173,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="username" type="text" name="userName"   onChange={(e) => onChange(e)}/>
+                            <Input placeholder="username" id="userName" type="text" name="userName" value={userName}   onChange={handleChangeInput}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -159,7 +183,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" name="email"  onChange={(e) => onChange(e)}/>
+                            <Input placeholder="Email" id="email" type="email" name="email" value={email} onChange={handleChangeInput}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -171,16 +195,35 @@ const Register = ({ registerUser, error })=> {
                             </InputGroupAddon>
                             <Input
                               placeholder="Password"
-                              type={hasPasswordShowed ? "text" : "password"}
+                              type={password ? "text" : "password"}
                               autoComplete="off"
+                              id="password"
                               name="password"
-                              onChange={(e) => onChange(e)}
+                              value={password}
+                              onChange={handleChangeInput}
 
                             />
-                              <i
-            onClick={() => setShowPassword(!hasPasswordShowed)}
-            className={hasPasswordShowed ? "fas fa-eye" : "fas fa-eye-slash"}
-          ></i>
+             
+                          </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-lock-circle-open" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              placeholder="Password"
+                              id="cf_password"
+                              type={cf_password ? "text" : "password"}
+                              autoComplete="off"
+                              value={cf_password}
+                              name="cf_password"
+                              onChange={handleChangeInput}
+
+                            />
+      
                           </InputGroup>
                         </FormGroup>
                         <div className="text-muted font-italic">
@@ -199,20 +242,6 @@ const Register = ({ registerUser, error })=> {
                                 id="customCheckRegister"
                                 type="checkbox"
                               />
-                              <label
-                                className="custom-control-label"
-                                htmlFor="customCheckRegister"
-                              >
-                                <span>
-                                  I agree with the{" "}
-                                  <a
-                                    href="#pablo"
-                                    onClick={e => e.preventDefault()}
-                                  >
-                                    Privacy Policy
-                                  </a>
-                                </span>
-                              </label>
                             </div>
                           </Col>
                         </Row>
@@ -220,8 +249,8 @@ const Register = ({ registerUser, error })=> {
                           <Button
                             className="mt-4"
                             color="primary"
-                            type="button"
-                            onClick={() => handleRegister()}
+                            type="submit"
+                  
                           >
                             Create account
                           </Button>
@@ -241,8 +270,6 @@ const Register = ({ registerUser, error })=> {
 
 
 
-  const mapStateToProps = (state) => ({
-    error: state.auth.errors,
-  });
 
-  export default connect(mapStateToProps, { registerUser })(Register);
+
+  export default Register

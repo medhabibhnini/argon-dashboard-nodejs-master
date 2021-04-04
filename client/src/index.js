@@ -23,23 +23,21 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
-import Index from "views/Index.js";
-import Landing from "views/examples/Landing.js";
-import Login from "views/examples/Login.js";
-import Profile from "views/examples/Profile.js";
-import Register from "views/examples/Register.js";
-import EditProfile from "views/examples/EditProfile.js";
 
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
-import AdminLayout from "layouts/Admin.js";
+import DataProvider from './redux/store'
 
 
  
 import App from "App";
 ReactDOM.render(
+  <React.StrictMode>
+  <DataProvider>
   <App/>,
+  </DataProvider>
+  </React.StrictMode>,
   document.getElementById("root")
 );

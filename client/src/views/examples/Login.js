@@ -9,8 +9,9 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React, { Component } from "react";
-
+import React, {useState} from 'react'
+import {showErrMsg, showSuccessMsg} from '../utils/notification/Notification'
+import {dispatchLogin} from '../../redux/actions/authAction'
 // reactstrap components
 import {
   Button,
@@ -31,58 +32,78 @@ import {
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../../actions/auths/loginUser";
-import classnames from "classnames";
-import {Session} from 'bc-react-session';
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "habibhnini@gmail.com",
-      password: "Habib123",
-      errors: {}
-    };
-  }
-  componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/admin");
-    }
-  }
+import {useDispatch} from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import axios from 'axios'
+const initialState = {
+  email: '',
+  password: '',
+  err: '',
+  success: ''
+}
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/admin");
-    }
 
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
-    }
+function Login() {
+  const [user, setUser] = useState(initialState)
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const {email, password, err, success} = user
+
+  const handleChangeInput = e => {
+      const {name, value} = e.target
+      setUser({...user, [name]:value, err: '', success: ''})
   }
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
 
-  };
+  const handleSubmit = async e => {
+      e.preventDefault()
+      try {
+          const res = await axios.post('/user/login', {email, password})
+          setUser({...user, err: '', success: res.data.msg})
 
- 
+          localStorage.setItem('firstLogin', true)
 
-  onSubmit = e => {
-    e.preventDefault();
+          dispatch(dispatchLogin())
+          history.push("/")
 
-    const userData = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    this.props.loginUser(userData);
- 
-  };
-  render() {
-    const { errors } = this.state;
+      } catch (err) {
+          err.response.data.msg && 
+          setUser({...user, err: err.response.data.msg, success: ''})
+      }
+  }
+/*
+  const responseGoogle = async (response) => {
+      try {
+          const res = await axios.post('/user/google_login', {tokenId: response.tokenId})
+
+          setUser({...user, error:'', success: res.data.msg})
+          localStorage.setItem('firstLogin', true)
+
+          dispatch(dispatchLogin())
+          history.push('/')
+      } catch (err) {
+          err.response.data.msg && 
+          setUser({...user, err: err.response.data.msg, success: ''})
+      }
+  }
+
+  const responseFacebook = async (response) => {
+      try {
+          const {accessToken, userID} = response
+          const res = await axios.post('/user/facebook_login', {accessToken, userID})
+
+          setUser({...user, error:'', success: res.data.msg})
+          localStorage.setItem('firstLogin', true)
+
+          dispatch(dispatchLogin())
+          history.push('/')
+      } catch (err) {
+          err.response.data.msg && 
+          setUser({...user, err: err.response.data.msg, success: ''})
+      }
+  }
+*/
     return (
       <>
         <DemoNavbar />
@@ -134,7 +155,7 @@ class Login extends Component {
                       <div className="text-center text-muted mb-4">
                         <small>Or sign in with crekjnkjndentials</small>
                       </div>
-                      <Form  onSubmit={this.onSubmit}>
+                      <Form  onSubmit={handleSubmit}>
                         <FormGroup className="mb-3">
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
@@ -143,14 +164,12 @@ class Login extends Component {
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input 
-                           
-                           onChange={this.onChange}
-                           value={this.state.email}
-                           error={errors.email}
+                          value={email} name="email" onChange={handleChangeInput}
+                       
                            id="email"
                            type="email"
                               placeholder="Email" 
-                          
+                              name="password"
                               />
                           </InputGroup>
                         </FormGroup>
@@ -163,13 +182,12 @@ class Login extends Component {
                             </InputGroupAddon>
                             <Input
                            
-                           onChange={this.onChange}
-                            value={this.state.password}
-                             error={errors.password}
+                           value={password} name="password" onChange={handleChangeInput}
+                        
                             id="password"
                             type="password"
                               placeholder="Password"
-                              
+                              name="password"
                               autoComplete="off"
                             />
                           </InputGroup>
@@ -229,19 +247,6 @@ class Login extends Component {
       </>
     );
   }
-}
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
-});
 
-export default connect(
-  mapStateToProps,
-  { loginUser }
-)(Login);
+export default Login

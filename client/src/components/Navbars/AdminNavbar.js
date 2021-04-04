@@ -37,7 +37,6 @@ import {
 } from "reactstrap";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../actions/auths/logOut";
 import {Session} from 'bc-react-session';
 
 class AdminNavbar extends Component {
@@ -125,7 +124,7 @@ class AdminNavbar extends Component {
 };
 }
 AdminNavbar.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
+
   auth: PropTypes.object.isRequired
 };
 
@@ -135,6 +134,6 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+
 )(AdminNavbar);
 
