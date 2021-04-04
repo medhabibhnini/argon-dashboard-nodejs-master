@@ -38,12 +38,11 @@ import {
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {Session} from 'bc-react-session';
-
+import { logoutUser } from "../../actions/auth";
 class AdminNavbar extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
-    Session.destroy();
   };
   render() {
     const { user } = this.props.auth;
@@ -134,6 +133,6 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-
+  { logoutUser }
 )(AdminNavbar);
 

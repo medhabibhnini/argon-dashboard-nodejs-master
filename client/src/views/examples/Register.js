@@ -38,58 +38,39 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import React, {useState} from 'react'
-import axios from 'axios'
-import {showErrMsg, showSuccessMsg} from '../utils/notification/Notification'
-import {isEmpty, isEmail, isLength, isMatch} from '../utils/validation/Validation'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+import { register } from '../../actions/auth';
+import { setAlert } from '../../actions/alert';
+import Alert from '../../components/Alert';
+import { Redirect, Link } from 'react-router-dom';
+const Register =({ setAlert, register , isAuthenticated })=>{
+  const [formData, setFormData] = useState({
+    name: '',
+    lastName: '',
+    userName: '',
+    email: '',
+    password: '',
+    cf_password: ''
+  });
+  const { name, lastName,userName, email, password, cf_password } = formData;
+  const onChange = e => setFormData({
+    ...formData, [e.target.name]: e.target.value
+  });
+  const onClick = e => {
+    e.preventDefault();
+    if (password !== cf_password) {
+      setAlert('passwords do not match', 'danger');
+    }
+    else {
+      register({  name, lastName,userName, email, password, cf_password  });
+      setAlert('account created', 'success'); 
+     
+    }
+    if (isAuthenticated) {
+      return <Redirect to="/"></Redirect>
+    }
 
-
-const initialState = {
-  name: '',
-  userName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  cf_password: '',
-  err: '',
-  success: ''
-}
-function Register () {
-  const [user, setUser] = useState(initialState)
-
-  const {name, email, password,cf_password,userName,lastName, err, success} = user
-
-  const handleChangeInput = e => {
-      const {name, value} = e.target
-      setUser({...user, [name]:value, err: '', success: ''})
-  }
-
-
-  const handleSubmit = async e => {
-      e.preventDefault()
-      if(isEmpty(name) || isEmpty(password) || isEmpty(lastName) || isEmpty(userName))
-              return setUser({...user, err: "Please fill in all fields.", success: ''})
-
-      if(!isEmail(email))
-          return setUser({...user, err: "Invalid emails.", success: ''})
-
-      if(isLength(password))
-          return setUser({...user, err: "Password must be at least 6 characters.", success: ''})
-      
-      if(!isMatch(password, cf_password))
-          return setUser({...user, err: "Password did not match.", success: ''})
-          const body = JSON.stringify({name, email, password ,userName,lastName })
-          console.log(body);
-      try {
-          const res = await axios.post('http://localhost:5000/user/register', 
-              body
-          )
-
-          setUser({...user /*, err: '', success: res.data.msg*/})
-      } catch (err) {
-          //err.response.data.msg && 
-          setUser({...user/*, err: err.response.data.msg, success: ''*/})
-          console.log(user)
-      }
   }
     return (
       <>
@@ -142,10 +123,9 @@ function Register () {
                       <div className="text-center text-muted mb-4">
                         <small>Or sign up with credentials</small>
                       </div>
-                      {err && showErrMsg(err)}
-                      {success && showSuccessMsg(success)}
-
-                      <Form onSubmit={handleSubmit}>
+                      <Alert></Alert>
+                     
+                      <Form role="form">
                         <FormGroup>
                           <InputGroup className="input-group-alternative mb-3">
                             <InputGroupAddon addonType="prepend">
@@ -153,7 +133,7 @@ function Register () {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Name" type="text" name="name" value={name} onChange={handleChangeInput}/>
+                            <Input placeholder="Name" type="text" name="name" value={name} onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -163,7 +143,7 @@ function Register () {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Lastname" id="lastName" type="text" name="lastName" value={lastName} onChange={handleChangeInput}/>
+                            <Input placeholder="Lastname" id="lastName" type="text" name="lastName" value={lastName} onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -173,7 +153,7 @@ function Register () {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="username" id="userName" type="text" name="userName" value={userName}   onChange={handleChangeInput}/>
+                            <Input placeholder="username" id="userName" type="text" name="userName" value={userName}   onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -183,7 +163,7 @@ function Register () {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" id="email" type="email" name="email" value={email} onChange={handleChangeInput}/>
+                            <Input placeholder="Email" id="email" type="email" name="email" value={email} onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -200,7 +180,7 @@ function Register () {
                               id="password"
                               name="password"
                               value={password}
-                              onChange={handleChangeInput}
+                              onChange={e => onChange(e)}
 
                             />
              
@@ -220,7 +200,7 @@ function Register () {
                               autoComplete="off"
                               value={cf_password}
                               name="cf_password"
-                              onChange={handleChangeInput}
+                              onChange={e => onChange(e)}
 
                             />
       
@@ -249,7 +229,7 @@ function Register () {
                           <Button
                             className="mt-4"
                             color="primary"
-                            type="submit"
+                            onClick={e => onClick(e)}
                   
                           >
                             Create account
@@ -269,7 +249,13 @@ function Register () {
   }
 
 
+  Register.propTypes = {
+    setAlert: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+  }
 
-
-
-  export default Register
+  const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+  })
+  export default connect(mapStateToProps, { setAlert, register })(Register);

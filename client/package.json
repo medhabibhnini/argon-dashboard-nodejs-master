@@ -91,5 +91,5 @@
     "jquery": "^3.6.0",
     "typescript": "3.7.5"
   },
-  "proxy":"http://localhost:5000"
+  "proxy": "http://localhost:5000"
 }
