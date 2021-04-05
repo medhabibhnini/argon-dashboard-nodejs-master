@@ -40,29 +40,7 @@ import {
 } from "reactstrap";
 
 const DemoNavbar = () =>{
-/*
-  componentDidMount() {
-    let headroom = new Headroom(document.getElementById("navbar-main"));
-    // initialise
-    headroom.init();
-  }
-  state = {
-    collapseClasses: "",
-    collapseOpen: false
-  };
 
-  onExiting = () => {
-    this.setState({
-      collapseClasses: "collapsing-out"
-    });
-  };
-
-  onExited = () => {
-    this.setState({
-      collapseClasses: ""
-    });
-  };
-*/
 
     return (
       <>
@@ -85,9 +63,7 @@ const DemoNavbar = () =>{
               <UncontrolledCollapse
                 toggler="#navbar_global"
                 navbar
-              /*  className={this.state.collapseClasses}
-                onExiting={this.onExiting}
-                onExited={this.onExited}*/
+    
               >
                 <div className="navbar-collapse-header">
                   <Row>
@@ -189,7 +165,7 @@ const DemoNavbar = () =>{
                 <NavItem>
                 <NavLink
                   className="nav-link-icon"
-                  to="/auth/register"
+                  to="/register-page"
                   tag={Link}
                 >
                   <i className="ni ni-circle-08" />

@@ -1,21 +1,15 @@
 /*!
-
 =========================================================
 * Argon Design System React - v1.1.0
 =========================================================
-
 * Product Page: https://www.creative-tim.com/product/argon-design-system-react
 * Copyright 2020 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
 * Coded by Creative Tim
-
 =========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
-import React, { useState } from "react";
+
 
 // reactstrap components
 import {
@@ -33,78 +27,52 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { connect } from "react-redux";
-import axios from "axios";
+
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
-import { useHistory } from "react-router-dom";
-import {showErrMsg, showSuccessMsg} from '../utils/notification/Notification'
-import {isEmpty, isEmail, isLength, isMatch} from '../utils/validation/Validation'
+import React, {useState} from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+import { register } from '../../actions/auth';
+import { setAlert } from '../../actions/alert';
+import Alert from '../../components/Alert';
+import { Redirect, Link } from 'react-router-dom';
+const Register =({ setAlert, register , isAuthenticated })=>{
+  const [formData, setFormData] = useState({
+    name: '',
+    lastName: '',
+    userName: '',
+    email: '',
+    password: '',
+    cf_password: ''
+  });
+  const { name, lastName,userName, email, password, cf_password } = formData;
+  const onChange = e => setFormData({
+    ...formData, [e.target.name]: e.target.value
+  });
+  const onClick = e => {
+    e.preventDefault();
+    if (password !== cf_password) {
+      setAlert('passwords do not match', 'danger');
+    }
+    else {
+      register({  name, lastName,userName, email, password, cf_password  });
+      setAlert('account created', 'success');
 
+    }
+    if (isAuthenticated) {
+      return <Redirect to="/"></Redirect>
+    }
 
-const initialState = {
-  name: '',
-  lastname:'',
-  username:'',
-  email: '',
-  password: '',
-  cf_password: '',
-  err: '',
-  success: ''
-}
-
-const Register = ()=> {
-  const [user, setUser] = useState(initialState)
-
-  const {name, lastname,username,email, password,cf_password, err, success} = user
-
-  const handleChangeInput = e => {
-      const {name, value} = e.target
-      setUser({...user, [name]:value, err: '', success: ''})
   }
-
-
-  const handleSubmit = async e => {
-      e.preventDefault()
-      if(isEmpty(name) || isEmpty(lastname)|| isEmpty(password) || isEmpty(username))
-              return setUser({...user, err: "Please fill in all fields.", success: ''})
-
-      if(!isEmail(email))
-          return setUser({...user, err: "Invalid emails.", success: ''})
-
-      if(isLength(password))
-          return setUser({...user, err: "Password must be at least 6 characters.", success: ''})
-
-      if(!isMatch(password, cf_password))
-          return setUser({...user, err: "Password did not match.", success: ''})
-
-      try {
-          const res = await axios.post('/user/register', {
-              name,lastname,username, email, password
-          })
-
-          setUser({...user, err: '', success: 'dd'})
-      } catch (err) {
-         // err.response.data.msg &&
-          setUser({...user, err:' err.response.data.msg', success: ''})
-      }
-  }
-
     return (
       <>
         <DemoNavbar />
         <main >
           <section className="section section-shaped section-lg">
             <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
+
             </div>
             <Container className="pt-lg-7">
               <Row className="justify-content-center">
@@ -149,7 +117,9 @@ const Register = ()=> {
                       <div className="text-center text-muted mb-4">
                         <small>Or sign up with credentials</small>
                       </div>
-                      <form role="form"  onSubmit={handleSubmit}>
+                      <Alert></Alert>
+
+                      <Form role="form">
                         <FormGroup>
                           <InputGroup className="input-group-alternative mb-3">
                             <InputGroupAddon addonType="prepend">
@@ -157,7 +127,7 @@ const Register = ()=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Name" type="text" name="name"  id="name" onChange={handleChangeInput} />
+                            <Input placeholder="Name" type="text" name="name" value={name} onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -167,7 +137,7 @@ const Register = ()=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Lastname" type="text" name="lastname"  id="lastname" onChange={handleChangeInput}  />
+                            <Input placeholder="Lastname" id="lastName" type="text" name="lastName" value={lastName} onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -177,7 +147,7 @@ const Register = ()=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="username" type="text" name="username" name="username" onChange={handleChangeInput}   />
+                            <Input placeholder="username" id="userName" type="text" name="userName" value={userName}   onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -187,7 +157,7 @@ const Register = ()=> {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email"  id="email" name="email" onChange={handleChangeInput}  />
+                            <Input placeholder="Email" id="email" type="email" name="email" value={email} onChange={e => onChange(e)}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -199,10 +169,13 @@ const Register = ()=> {
                             </InputGroupAddon>
                             <Input
                               placeholder="Password"
+                              type={password ? "text" : "password"}
                               autoComplete="off"
+                              id="password"
                               name="password"
-type="password"onChange={handleChangeInput}
-id="password"
+                              value={password}
+                              onChange={e => onChange(e)}
+
                             />
 
                           </InputGroup>
@@ -215,11 +188,14 @@ id="password"
                               </InputGroupText>
                             </InputGroupAddon>
                             <Input
-                              placeholder="Confirm Password"
-                              autoComplete="off"
-                              name="cf_password"
+                              placeholder="Password"
                               id="cf_password"
-type="password"onChange={handleChangeInput}
+                              type={cf_password ? "text" : "password"}
+                              autoComplete="off"
+                              value={cf_password}
+                              name="cf_password"
+                              onChange={e => onChange(e)}
+
                             />
 
                           </InputGroup>
@@ -240,35 +216,20 @@ type="password"onChange={handleChangeInput}
                                 id="customCheckRegister"
                                 type="checkbox"
                               />
-                              <label
-                                className="custom-control-label"
-                                htmlFor="customCheckRegister"
-                              >
-                                <span>
-                                  I agree with the{" "}
-                                  <a
-                                    href="#pablo"
-                                    onClick={e => e.preventDefault()}
-                                  >
-                                    Privacy Policy
-                                  </a>
-                                </span>
-                              </label>
                             </div>
                           </Col>
                         </Row>
                         <div className="text-center">
-                          <button
+                          <Button
                             className="mt-4"
                             color="primary"
-                            type="submit"
+                            onClick={e => onClick(e)}
+
                           >
                             Create account
-                          </button>
+                          </Button>
                         </div>
-                      </form>
-                      {err && showErrMsg(err)}
-            {success && showSuccessMsg(success)}
+                      </Form>
                     </CardBody>
                   </Card>
                 </Col>
@@ -282,7 +243,13 @@ type="password"onChange={handleChangeInput}
   }
 
 
+  Register.propTypes = {
+    setAlert: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+  }
 
-
-
-  export default Register;
+  const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+  })
+  export default connect(mapStateToProps, { setAlert, register })(Register);

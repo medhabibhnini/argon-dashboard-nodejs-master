@@ -1,28 +1,13 @@
-/*!
+import React, { useState } from "react";
+import classnames from "classnames";
 
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from 'react-router-dom';
-import axios from "axios";
-
-
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import AuthHeader from "components/Headers/AuthHeader.jsx";
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types'
+//import Alert from '../../../components/Alert';
+import { login } from '../../actions/auth'
+import { Redirect, Link } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -39,165 +24,168 @@ import {
   Col
 } from "reactstrap";
 
-// core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
+
+const Login = ({ login, isAuthenticated }) => {
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const { email, password } = formData;
+  const onChange = e => setFormData({
+    ...formData, [e.target.name]: e.target.value
+  });
+  const onClick = async e => {
+    e.preventDefault();
+    login(email, password);
+  };
+  if (isAuthenticated) {
+    return <Redirect to="/admin"></Redirect>
   }
-};
-const Login = () => {
-
-    return (
-      <>
-        <DemoNavbar />
-        <main>
-          <section className="section section-shaped section-lg">
-            <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <Container className="pt-lg-_67">
-              <Row className="justify-content-center">
-                <Col lg="5">
-                  <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-white pb-5">
-                      <div className="text-muted text-center mb-3">
-                        <small>Sign in with</small>
-                      </div>
-                      <div className="btn-wrapper text-center">
-                        <Button
-                          className="btn-neutral btn-icon"
-                          color="default"
-                          href="#pablo"
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardBody className="px-lg-5 py-lg-5">
-                      <div className="text-center text-muted mb-4">
-                        <small>Or sign in with crekjnkjndentials</small>
-                      </div>
-                      <form role="form"
- >
-                        <FormGroup className="mb-3">
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-email-83" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input placeholder="Email" type="email" name="email"/>
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-lock-circle-open" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input
-                              placeholder="Password"
-                              type="password"
-                              autoComplete="off"
-                              name="password"
 
 
-                            />
-                          </InputGroup>
-                        </FormGroup>
-                        <div className="custom-control custom-control-alternative custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            id=" customCheckLogin"
-                            type="checkbox"
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor=" customCheckLogin"
-                          >
-                            <span>Remember me</span>
-                          </label>
-                        </div>
-                        <div className="text-center">
-                          <button
-                            className="my-4"
-                            color="primary"
-                            type="submit"
+  return (
+    <>
+      <AuthHeader
+        title="Welcome to Improve!"
+        lead="Use these to login or create new account."
+      />
+      <Container className="mt--8 pb-5">
+        <Row className="justify-content-center">
+          <Col lg="5" md="7">
+            <Card className="bg-secondary border-0 mb-0">
+              <CardHeader className="bg-transparent pb-5">
+                <div className="text-muted text-center mt-2 mb-3">
+                  <small>Sign in with</small>
+                </div>
+                <div className="btn-wrapper text-center">
+                  <Button
+                    className="btn-neutral btn-icon"
+                    color="default"
+                    href="#pablo"
 
+                  >
+                    <span className="btn-inner--icon mr-1">
+                      <img
+                        alt="..."
+                        src={require("assets/img/icons/common/github.svg")}
+                      />
+                    </span>
+                    <span className="btn-inner--text">Github</span>
+                  </Button>
+                  <Button
+                    className="btn-neutral btn-icon"
+                    color="default"
+                    href="#pablo"
 
-                        >
-                        Sign in
-                          </button>
-                        </div>
+                  >
+                    <span className="btn-inner--icon mr-1">
+                      <img
+                        alt="..."
+                        src={require("assets/img/icons/common/google.svg")}
+                      />
+                    </span>
+                    <span className="btn-inner--text">Google</span>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardBody className="px-lg-5 py-lg-5">
+                <div className="text-center text-muted mb-4">
+                  <small>Or sign in with credentials</small>
+                </div>
 
-                      </form>
-                    </CardBody>
-                  </Card>
-                  <Row className="mt-3">
-                    <Col xs="6">
-                      <a
-                        className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        <small>Forgot password?</small>
-                      </a>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                      <a
-                        className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        <small>Create new account</small>
-                      </a>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Container>
-          </section>
-        </main>
-        <SimpleFooter />
-      </>
-    );
+                <Form role="form" className='form'  >
+                  <FormGroup
+                  >
+                    <InputGroup className="input-group-merge input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-email-83" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={e => onChange(e)}
+                        required
 
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <FormGroup
+                  >
+                    <InputGroup className="input-group-merge input-group-alternative">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="ni ni-lock-circle-open" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Password"
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={e => onChange(e)}
+                        required
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                  <div className="custom-control custom-control-alternative custom-checkbox">
+                    <input
+                      className="custom-control-input"
+                      id=" customCheckLogin"
+                      type="checkbox"
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor=" customCheckLogin"
+                    >
+                      <span className="text-muted">Remember me</span>
+                    </label>
+                  </div>
+                  <div className="text-center">
+                    <Button onClick={e => onClick(e)} className="my-4" color="info" type="button">
+                      Sign in
+                      </Button>
+                  </div>
+                </Form>
+              </CardBody>
+            </Card>
+            <Row className="mt-3">
+              <Col xs="6">
+                <a
+                  className="text-light"
+                  href="#pablo"
+
+                >
+                  <small>Forgot password?</small>
+                </a>
+              </Col>
+              <Col className="text-right" xs="6">
+                <a
+                  className="text-light"
+                  href="#pablo"
+
+                >
+                  <small><Link to='/register-page'>Create new account</Link></small>
+                </a>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
 }
 
-
-export default Login;
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+}
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+export default connect(mapStateToProps, { login })(Login);
