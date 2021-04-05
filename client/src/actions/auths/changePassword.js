@@ -14,7 +14,7 @@ export const changePassword = (newPassword) => async (dispatch) => {
     };
     const body = JSON.stringify({ newPassword });
     const res = await axios.put(
-      "http://localhost:5000/api/users/change_user_password",
+      "http://localhost:8000/users/password/forget",
       body,
       config
     );

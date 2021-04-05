@@ -52,3 +52,19 @@ module.exports.searchForPostValidator = [
 module.exports.addCommentValidator = [
   check("textOfTheComment", "Text is empty").not().isEmpty(),
 ];
+
+module.exports.forgetPasswordValidator = [
+  check('email')
+      .not()
+      .isEmpty()
+      .isEmail()
+      .withMessage('Must be a valid email address')
+];
+
+module.exports.resetPasswordValidator = [
+  check('newPassword')
+      .not()
+      .isEmpty()
+      .isLength({ min: 6 })
+      .withMessage('Password must be at least  6 characters long')
+];

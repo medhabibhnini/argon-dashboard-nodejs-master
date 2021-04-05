@@ -125,15 +125,14 @@ else history.push("/login-page");*/
                         <Button
                           className="btn-neutral btn-icon"
                           color="default"
-                          href="#pablo"
+                          href="/facebook"
                         >
                           <span className="btn-inner--icon mr-1">
                             <img
-                              alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
+                              src={require("assets/img/icons/common/facebook.svg")}
                             />
                           </span>
-                          <span className="btn-inner--text">Github</span>
+                          <span className="btn-inner--text">facebook</span>
                         </Button>
                         <Button
                           className="btn-neutral btn-icon ml-1"
@@ -216,8 +215,7 @@ else history.push("/login-page");*/
                     <Col xs="6">
                       <a
                         className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        href="/users/password-forget"
                       >
                         <small>Forgot password?</small>
                       </a>

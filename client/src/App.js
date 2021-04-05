@@ -9,9 +9,12 @@ import store from "./store";
 import Index from "views/Index.js";
 import Landing from "views/examples/Landing.js";
 import Login from "views/examples/Login.js";
+import Forget from "views/examples/Forget.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import ResetPassword from "views/examples/resetPassword";
+import Reset from "views/examples/Reset";
+
 import EditProfile from "views/examples/EditProfile.js";
 import { BrowserRouter as BrowserRouter, Route, Switch,Redirect,Router } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -42,6 +45,9 @@ const App = () => {
         render={props => <Landing {...props} />}
       />
       <Route path="/login-page" exact render={props => <Login {...props} />} />
+      
+      <Route path="/users/password-forget" exact render={props => <Forget {...props} />} />
+      
       <Route
         path="/profile-page"
         exact
@@ -50,6 +56,7 @@ const App = () => {
 
      <Route path="/register-page" exact component={Register} />
 
+
       <Route
         path="/Edit-profile"
         exact
@@ -57,9 +64,9 @@ const App = () => {
       />
 
 <Route
-        path="/reset-password"
+        path="/reset"
         exact
-        render={props => <ResetPassword {...props} />}
+        render={props => <Reset {...props} />}
       />
 
               <Redirect to="/" />

@@ -7,6 +7,8 @@ const getUsers = require("../functions/userFunctions/getUsers");
 const getUserById = require("../functions/userFunctions/getUserById");
 const registerUser = require("../functions/userFunctions/registerUser");
 const loginUser = require("../functions/userFunctions/loginUser");
+const forgetpasswordUser = require("../functions/userFunctions/forgetpasswordUser");
+
 const auth = require("../middleware/auth");
 
 const {
@@ -16,6 +18,7 @@ const {
   changeUserDataValidator,
   checkActualPasswordValidator,
   changeUserPasswordValidator,
+  forgetPasswordValidator,
 } = require("../middleware/express-validator/expressValidator");
 const searchUserByUsername = require("../functions/userFunctions/searchUserByUsername");
 const changeUserData = require("../functions/userFunctions/changeUserData");
@@ -33,6 +36,8 @@ router.get("/get_user_by_id/:user_id", getUserById);
 router.post("/register", registerUserValidator, registerUser);
 
 router.post("/login", loginUserValidator, loginUser);
+
+router.put("/users/password-forget", forgetPasswordValidator, forgetpasswordUser);
 
 router.put(
   "/search_by_username",

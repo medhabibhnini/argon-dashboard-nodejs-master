@@ -195,10 +195,10 @@ class Modals extends React.Component {
                         <span className="btn-inner--icon mr-1">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/common/github.svg")}
+                            src={require("assets/img/icons/common/facebook.svg")}
                           />
                         </span>
-                        <span className="btn-inner--text">Github</span>
+                        <span className="btn-inner--text">facebook</span>
                       </Button>
                       <Button
                         className="btn-icon mt-2 mb-2 ml-1"

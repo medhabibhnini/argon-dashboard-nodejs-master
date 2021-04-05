@@ -93,13 +93,15 @@ const Register = ({ registerUser, error })=> {
                           href="#pablo"
                           onClick={e => e.preventDefault()}
                         >
+                          <a href="/facebook" class="btn btn-neutral btn-icon">
                           <span className="btn-inner--icon mr-1">
                             <img
                               alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
+                              src={require("assets/img/icons/common/facebook.svg")}
                             />
                           </span>
-                          <span className="btn-inner--text">Github</span>
+                          <span className="btn-inner--text">facebook</span>
+                        </a>
                         </Button>
                         <Button
                           className="btn-neutral btn-icon ml-1"
