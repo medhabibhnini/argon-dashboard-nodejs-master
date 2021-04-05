@@ -132,16 +132,14 @@ const Posts = ({
           </section>
           <section className="section">
             <Container>
-              <Card className="card-body mt--300">
-                    <Row className="justify-content-center">
+              <Card className="card-body mt--700">
+                    <Row className="justify-content-center" align="center">
                       <Col lg="9">
                         <h3 align="center" class="text-primary font-weight-700">Posts </h3>
                         <p align="center" class="font-weight-500">
                         Here, you can find all the users' posts, so you can see, like and comment them
                         </p>
-
-                        <div class="card-lift--hover shadow border-0 card" >
-                        <div class="py-5 card-body">
+              <hr></hr>
                  <div className="topics-wrapper" >
      
                   <TopicPostsWrapper
@@ -157,8 +155,6 @@ const Posts = ({
                         <br></br>
 
                         
-                        </div>
-                        </div>
                       </Col>
                     </Row>
                   

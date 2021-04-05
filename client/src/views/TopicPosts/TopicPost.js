@@ -18,6 +18,7 @@ const TopicPost = ({
   auth,
 }) => {
   return (
+    
     <section className="section-profile-cover section-shaped my-0">
        <div className="separator separator-bottom separator-skew">
               <svg
@@ -35,12 +36,10 @@ const TopicPost = ({
               </svg>
             </div>
             <section className="section">
-<Container>
-<Card className="card-body mt--700">
-<Row className="justify-content-center">
-                      <Col lg="9">
-                      <div class="card-lift--hover shadow border-0 card" >
-                        <div class="py-5 card-body">
+          <Container>
+
+            <div class="card-lift--hover shadow border-0 card" >
+            <div class="py-5 card-body">
     <div className="topic-wrapper">
       <div className="topic-date">
         <Moment format="HH:mm YYYY-MM-DD">{post.date}</Moment>
@@ -111,10 +110,7 @@ const TopicPost = ({
       </div>
       </div>
       
-      </Col>
-      </Row>
-      
-    </Card>
+ 
 
     </Container>
     <hr></hr>
