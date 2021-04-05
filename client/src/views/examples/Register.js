@@ -33,36 +33,64 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { registerUser } from "../../actions/auths/registerUser";
 import { connect } from "react-redux";
+import axios from "axios";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import { useHistory } from "react-router-dom";
+import {showErrMsg, showSuccessMsg} from '../utils/notification/Notification'
+import {isEmpty, isEmail, isLength, isMatch} from '../utils/validation/Validation'
 
-const Register = ({ registerUser, error })=> {
-  const [hasPasswordShowed, setShowPassword] = useState(false);
 
-  const [userData, setUserData] = useState({
-    name: "",
-    lastName: "",
-    userName: "",
-    email: "",
-    password: "",
-  });
-  let history = useHistory();
+const initialState = {
+  name: '',
+  lastname:'',
+  username:'',
+  email: '',
+  password: '',
+  cf_password: '',
+  err: '',
+  success: ''
+}
 
-  const { name, lastName, userName, email, password } = userData;
-  const onChange = (e) =>
-  setUserData({ ...userData, [e.target.name]: e.target.value });
-  const handleRegister = (e) => {
+const Register = ()=> {
+  const [user, setUser] = useState(initialState)
 
-    if(registerUser(userData))
-    {
-      history.push("/login-page");
-    } else       history.push("/register-page");
+  const {name, lastname,username,email, password,cf_password, err, success} = user
 
+  const handleChangeInput = e => {
+      const {name, value} = e.target
+      setUser({...user, [name]:value, err: '', success: ''})
   }
+
+
+  const handleSubmit = async e => {
+      e.preventDefault()
+      if(isEmpty(name) || isEmpty(lastname)|| isEmpty(password) || isEmpty(username))
+              return setUser({...user, err: "Please fill in all fields.", success: ''})
+
+      if(!isEmail(email))
+          return setUser({...user, err: "Invalid emails.", success: ''})
+
+      if(isLength(password))
+          return setUser({...user, err: "Password must be at least 6 characters.", success: ''})
+
+      if(!isMatch(password, cf_password))
+          return setUser({...user, err: "Password did not match.", success: ''})
+
+      try {
+          const res = await axios.post('/user/register', {
+              name,lastname,username, email, password
+          })
+
+          setUser({...user, err: '', success: 'dd'})
+      } catch (err) {
+         // err.response.data.msg &&
+          setUser({...user, err:' err.response.data.msg', success: ''})
+      }
+  }
+
     return (
       <>
         <DemoNavbar />
@@ -121,7 +149,7 @@ const Register = ({ registerUser, error })=> {
                       <div className="text-center text-muted mb-4">
                         <small>Or sign up with credentials</small>
                       </div>
-                      <Form role="form">
+                      <form role="form"  onSubmit={handleSubmit}>
                         <FormGroup>
                           <InputGroup className="input-group-alternative mb-3">
                             <InputGroupAddon addonType="prepend">
@@ -129,7 +157,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Name" type="text" name="name"  onChange={(e) => onChange(e)}/>
+                            <Input placeholder="Name" type="text" name="name"  id="name" onChange={handleChangeInput} />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -139,7 +167,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Lastname" type="text" name="lastName" onChange={(e) => onChange(e)}/>
+                            <Input placeholder="Lastname" type="text" name="lastname"  id="lastname" onChange={handleChangeInput}  />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -149,7 +177,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="username" type="text" name="userName"   onChange={(e) => onChange(e)}/>
+                            <Input placeholder="username" type="text" name="username" name="username" onChange={handleChangeInput}   />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -159,7 +187,7 @@ const Register = ({ registerUser, error })=> {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" name="email"  onChange={(e) => onChange(e)}/>
+                            <Input placeholder="Email" type="email"  id="email" name="email" onChange={handleChangeInput}  />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -171,16 +199,29 @@ const Register = ({ registerUser, error })=> {
                             </InputGroupAddon>
                             <Input
                               placeholder="Password"
-                              type={hasPasswordShowed ? "text" : "password"}
                               autoComplete="off"
                               name="password"
-                              onChange={(e) => onChange(e)}
-
+type="password"onChange={handleChangeInput}
+id="password"
                             />
-                              <i
-            onClick={() => setShowPassword(!hasPasswordShowed)}
-            className={hasPasswordShowed ? "fas fa-eye" : "fas fa-eye-slash"}
-          ></i>
+
+                          </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-lock-circle-open" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input
+                              placeholder="Confirm Password"
+                              autoComplete="off"
+                              name="cf_password"
+                              id="cf_password"
+type="password"onChange={handleChangeInput}
+                            />
+
                           </InputGroup>
                         </FormGroup>
                         <div className="text-muted font-italic">
@@ -217,16 +258,17 @@ const Register = ({ registerUser, error })=> {
                           </Col>
                         </Row>
                         <div className="text-center">
-                          <Button
+                          <button
                             className="mt-4"
                             color="primary"
-                            type="button"
-                            onClick={() => handleRegister()}
+                            type="submit"
                           >
                             Create account
-                          </Button>
+                          </button>
                         </div>
-                      </Form>
+                      </form>
+                      {err && showErrMsg(err)}
+            {success && showSuccessMsg(success)}
                     </CardBody>
                   </Card>
                 </Col>
@@ -241,8 +283,6 @@ const Register = ({ registerUser, error })=> {
 
 
 
-  const mapStateToProps = (state) => ({
-    error: state.auth.errors,
-  });
 
-  export default connect(mapStateToProps, { registerUser })(Register);
+
+  export default Register;

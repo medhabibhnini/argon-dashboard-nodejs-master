@@ -20,9 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import axios from "axios";
 
-import CheckButton from "react-validation/build/button";
 
-import { loginUser } from "../../actions/auths/loginUser";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -55,48 +53,6 @@ const required = (value) => {
   }
 };
 const Login = () => {
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-  let history = useHistory();
-
-  async function   login(e)
-  {
-try{
-e.preventDefault();
-const loginData ={
-  email,
-  password,
-};
-console.log(loginData);
-await axios.post("http://localhost:8000/login",loginData).then
-{
- history.push("/profile-page");
-
-}
-
-}catch(err)
-{
-  console.error(err);
-}
-
-  }
-  /*const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const { email, password } = userData;
-  const onChange = (e) =>
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-    let history = useHistory();
-
-    console.log(userData);
-    const handleLogin = (e) => {
-if(loginUser(userData))
-{history.push("/profile-page");}
-else history.push("/login-page");*/
-
-
 
     return (
       <>
@@ -113,7 +69,7 @@ else history.push("/login-page");*/
               <span />
               <span />
             </div>
-            <Container className="pt-lg-7">
+            <Container className="pt-lg-_67">
               <Row className="justify-content-center">
                 <Col lg="5">
                   <Card className="bg-secondary shadow border-0">
@@ -155,7 +111,7 @@ else history.push("/login-page");*/
                       <div className="text-center text-muted mb-4">
                         <small>Or sign in with crekjnkjndentials</small>
                       </div>
-                      <form role="form"onSubmit={login}
+                      <form role="form"
  >
                         <FormGroup className="mb-3">
                           <InputGroup className="input-group-alternative">
@@ -164,8 +120,7 @@ else history.push("/login-page");*/
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" name="email" onChange={(e) => setEmail(e.target.value)}
-/>
+                            <Input placeholder="Email" type="email" name="email"/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -180,7 +135,7 @@ else history.push("/login-page");*/
                               type="password"
                               autoComplete="off"
                               name="password"
-                              onChange={(e) => setPassword(e.target.value)}
+
 
                             />
                           </InputGroup>
@@ -203,6 +158,7 @@ else history.push("/login-page");*/
                             className="my-4"
                             color="primary"
                             type="submit"
+
 
                         >
                         Sign in
@@ -242,7 +198,6 @@ else history.push("/login-page");*/
     );
 
 }
-
 
 
 export default Login;

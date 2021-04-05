@@ -16,7 +16,7 @@
 
 */
 import React ,{useState} from "react";
-
+import axios from  "axios";
 // reactstrap components
 import { Button, Card, Container, Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -27,37 +27,6 @@ import SimpleFooter from "components/Footers/SimpleFooter.js";
 import { useHistory } from "react-router-dom";
 
 const Profile =()=>{
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-  let history = useHistory();
-/*
-  async function   getUser(e)
-  {
-try{
-e.preventDefault();
-const loginData ={
-  name,
-lastName,
-  userName,
-
-  email,
-
-};
-const [user,setUser]=useState("");
-
-console.log(loginData);
-await axios.get("http://localhost:8000/users").then(
-res => (setUser(res.data))
-
-
-}))
-
-}catch(err)
-{
-  console.error(err);
-}
-
-  }*/
 
     return (
     <>
@@ -112,14 +81,14 @@ res => (setUser(res.data))
                       lg="4"
                     >
                       <div className="card-profile-actions py-4 mt-lg-0">
-                        <Button
+                        <button
                           className="mr-4"
                           color="info"
                           to="/Edit-profile" tag={Link}
                           size="sm"
                         >
                            Profile
-                        </Button>
+                        </button>
                         <Button
                           className="float-right"
                           color="default"

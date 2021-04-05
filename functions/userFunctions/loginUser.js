@@ -35,15 +35,29 @@ module.exports = async (req, res) => {
     };
 
   //token for express cookie
-const token = jwt.sign(payload,config.get("jsonWebTokenSecret"));
-res.cookie('token',token,{maxAge:36000000,httpOnly:true}).send();
+//const token = jwt.sign(payload,config.get("jsonWebTokenSecret"));
+//res.cookie('token',token,{maxAge:36000000,httpOnly:true}).send();
 
  //res.redirect('/dashboard');
-  } catch (error) {
-    console.error(error.message);
+//  } catch (error) {
+  //  console.error(error.message);
 
-    return res.status(500).send("Server error.");
+   // return res.status(500).send("Server error.");
+//  }
+
+jwt.sign(
+  payload,
+  config.get("jsonWebTokenSecret"),
+  { expiresIn: 3600 },
+  (err, token) => {
+    if (err) throw err;
+    res.json({ token });
   }
+);
+} catch (error) {
+console.error(error.message);
+return res.status(500).send("Server error.");
+}
 
 
 
