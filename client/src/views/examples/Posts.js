@@ -1,30 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getPosts } from "../../actions/posts.actions/getPosts";
+import { getMostRecentPosts } from "../../actions/posts.actions/getMostRecentPosts";
+import { getMostCommentedPosts } from "../../actions/posts.actions/getMostCommentedPosts";
+import { getMostLikedPosts } from "../../actions/posts.actions/getMostLikedPosts";
+import { searchTopics } from "../../actions/posts.actions/searchTopics";
+import { connect } from "react-redux";
+import TopicPostsWrapper from "../TopicPosts/TopicPostsWrapper";
 
-// reactstrap components
+// reactstrap  
 import { Button, Card, Container, Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
-import axios from 'axios'
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
-import createPost from "../../actions/posts.actions/createPost"
-const Posts = ( ) => {
   
+const Posts = ({
+  getPosts,
+  getMostRecentPosts,
+  getMostCommentedPosts,
+  getMostLikedPosts,
+  searchTopics,
+  posts,
+}) => {
+  let [dataFromSearch, setDataFromSearch] = useState("");
+  let [topicsSortType, setTopicsSortType] = useState({
+    isTheOldest: false,
+    isTheMostRecent: true,
+    isTheMostCommented: false,
+    isTheMostLiked: false,
+  });
 
-    let [textOfThePost, setTextOfThePost] = useState("");
+  let {
+    isTheMostCommented,
+    isTheOldest,
+    isTheMostLiked,
+    isTheMostRecent,
+  } = topicsSortType;
 
-  const onChange = (e) => setTextOfThePost(e.target.value);
+  useEffect(() => {
+    if (isTheOldest) getPosts();
+    else if (isTheMostCommented) getMostCommentedPosts();
+    else if (isTheMostLiked) getMostLikedPosts();
+    else getMostRecentPosts();
+  }, []);
 
-  const submitData = () =>async ()=> {
-   /* if (textOfThePost !== "" && textOfThePost !== null) {
-      createPost(textOfThePost);
-      console.log(textOfThePost);
+  const onChange = (e) => setDataFromSearch(e.target.value);
+
+  const searchForTopic = () => {
+    if (dataFromSearch !== "" || dataFromSearch !== null) {
+      return searchTopics(dataFromSearch);
     } else {
-      alert("Text is empty!");
+      setTopicsSortType({
+        isTheMostRecent: true,
+        isTheMostCommented: false,
+        isTheMostLiked: false,
+        isTheOldest: false,
+      });
+      getMostRecentPosts();
     }
-    setTextOfThePost("");*/
-    await axios.post('http://localhost:8000/forum/createpost', textOfThePost);        
   };
+
+  const changeTopicsType = (changedType) => {
+    if (changedType === "isTheMostLiked") {
+      setTopicsSortType({
+        isTheMostLiked: true,
+        isTheOldest: false,
+        isTheMostCommented: false,
+        isTheMostRecent: false,
+      });
+      getMostLikedPosts();
+    } else if (changedType === "isTheOldest") {
+      setTopicsSortType({
+        isTheMostLiked: false,
+        isTheOldest: true,
+        isTheMostCommented: false,
+        isTheMostRecent: false,
+      });
+      getPosts();
+    } else if (changedType === "isTheMostCommented") {
+      setTopicsSortType({
+        isTheMostLiked: false,
+        isTheOldest: false,
+        isTheMostCommented: true,
+        isTheMostRecent: false,
+      });
+      getMostCommentedPosts();
+    } else {
+      setTopicsSortType({
+        isTheMostLiked: false,
+        isTheOldest: false,
+        isTheMostCommented: false,
+        isTheMostRecent: true,
+      });
+      getMostRecentPosts();
+    }
+  };
+
+  
+  
 
     return (
       <>
@@ -67,39 +139,22 @@ const Posts = ( ) => {
                         <p align="center" class="font-weight-500">
                         Here, you can find all the users' posts, so you can see, like and comment them
                         </p>
-                        <hr></hr>
 
-                        <br></br>
                         <div class="card-lift--hover shadow border-0 card" >
                         <div class="py-5 card-body">
-                        <div  align="center">
-                        <img alt="..." class="img-fluid rounded-circle shadow" src="/argon-design-system-react/static/media/team-2-800x800.dcfcf3b7.jpg" width="150px" align="center">
-                      </img>
-                      </div>
-                        <h6 class="text-primary text-uppercase"align="center">Janna Doe</h6>
-                        
-                        <p class="description mt-3">Argon is a great free UI package based on Bootstrap 4 that includes the most important components and features.</p>
-                        <hr></hr>
-                        <div>
-                            <span class="mr-1 badge badge-primary badge-pill">
-                            <a href="#pablo" class="nav-link-icon nav-link">
-                                <i class="ni ni-favourite-28"></i>
-                                <span class="nav-link-inner--text d-lg-none"> </span>
-                            </a>
-                            
-                            </span>
-                        
-                         
-                            
+                 <div className="topics-wrapper" >
+     
+                  <TopicPostsWrapper
+                  isTheOldest={isTheOldest}
+                  isTheMostCommented={isTheMostCommented}
+                  isTheMostRecent={isTheMostRecent}
+                  isTheMostLiked={isTheMostLiked}
+                  posts={posts.posts}
+                    />
+                </div>
+      
                         <br></br>
                         <br></br>
-                            <form>
-                            <div class="form-group">
-                                <input placeholder="Your comment..." type="text" class="form-control"></input>
-                            </div>
-                            <button type="button" class="btn btn-primary btn-sm">Comment</button>
-                                </form>
-                            </div>
 
                         
                         </div>
@@ -109,11 +164,26 @@ const Posts = ( ) => {
                   
               </Card>
             </Container>
+      
           </section>
         </main>
         <SimpleFooter />
       </>
     );
-  }
+  
+    };
 
-export default Posts;
+const mapStateToProps = (state) => ({
+  posts: state.posts,
+});
+
+const mapDispatchToProps = {
+  getPosts,
+  getMostRecentPosts,
+  getMostCommentedPosts,
+  getMostLikedPosts,
+  searchTopics,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+

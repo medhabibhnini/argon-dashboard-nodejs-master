@@ -3,6 +3,7 @@ const Post = require("../../schemas/Post");
 const User = require("../../schemas/User");
 
 module.exports = async (req, res) => {
+  
   let { textOfThePost } = req.body;
   
   const errors = validationResult(req);
@@ -14,6 +15,7 @@ module.exports = async (req, res) => {
     let name = user.name;
     let lastName = user.lastName;
     let userName = user.userName;
+    
     let newPost = new Post({
       name,
       lastName,
@@ -21,12 +23,14 @@ module.exports = async (req, res) => {
       textOfThePost,
    
     });
+    console.log("d5al");
 
+    console.log(newPost.json);
     await newPost.save();
 
     res.json("Post is created, congratulations!");
   } catch (error) {
-    console.error(error);
+    console.error("mad5alch");
     return res.status(500).json("Server Error...");
   }
 };

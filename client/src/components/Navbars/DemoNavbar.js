@@ -147,7 +147,7 @@ const DemoNavbar = () =>{
                       <span className="nav-link-inner--text">Forum</span>
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem to="/forum-page" tag={Link}>
+                      <DropdownItem to="/create-post" tag={Link}>
                         Make a post
                       </DropdownItem>
                       <DropdownItem to="/posts-page" tag={Link}>

@@ -11,6 +11,7 @@ import Landing from "views/examples/Landing.js";
 import Login from "views/examples/Login.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
+import AddPost from "views/examples/AddPost";
 import ResetPassword from "views/examples/resetPassword";
 import EditProfile from "views/examples/EditProfile.js";
 import { BrowserRouter as BrowserRouter, Route, Switch,Redirect,Router } from "react-router-dom";
@@ -18,6 +19,9 @@ import { Provider } from "react-redux";
 import { userLoaded } from "./actions/auths/userLoaded";
 import setAuthenticationToken from "./middleware/setAuthenticationToken";
 import IsLoggedInRoute from "./routes/IsLoggedInRoute";
+import Topics from "views/Topics";
+import Posts from "views/examples/Posts";
+import "./App.css";
 
 if (localStorage.getItem("token")) {
   setAuthenticationToken(localStorage.getItem("token"));
@@ -42,19 +46,28 @@ const App = () => {
         render={props => <Landing {...props} />}
       />
       <Route path="/login-page" exact render={props => <Login {...props} />} />
+      <Route path="/posts-page" exact render={props => <Posts {...props} />} />
+
       <Route
+
         path="/profile-page"
         exact
         render={props => <Profile {...props} />}
       />
 
      <Route path="/register-page" exact component={Register} />
+     <Route
+        path="/create-post"
+        exact
+        render={props => <AddPost {...props} />}
+      />
 
       <Route
         path="/Edit-profile"
         exact
         render={props => <EditProfile {...props} />}
       />
+          <Route path="/topics" exact component={Topics} />
 
 <Route
         path="/reset-password"

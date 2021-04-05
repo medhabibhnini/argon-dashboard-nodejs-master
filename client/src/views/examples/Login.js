@@ -49,10 +49,11 @@ const loginData ={
   email,
   password,
 };
-console.log(loginData);
 await axios.post("http://localhost:8000/login",loginData).then
 {
- history.push("/profile-page");
+// history.push("/profile-page");
+console.log(loginData);
+
 
 }
 

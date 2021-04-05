@@ -26,9 +26,19 @@ module.exports = async (req, res) => {
     let doPasswordsMatch = await bcryptjs.compare(password, user.password);
 
     if (!doPasswordsMatch)
-      return res.status(401).json({ msg: "Passwords do not match" });
+   
+   {
+    //res.send('<script>alert("Hello")</script>')
+    
+    //router.get('login');
+    //return res.render('localhost:8000/login')
+    
 
-    const payload = {
+      return res.status(401).json({ msg: "Passwords do not match" });  
+  }
+  
+
+      const payload = {
       user: {
         id: user._id,
       },

@@ -29,7 +29,7 @@
                   <small class="text-success font-weight-700"><%= messages.success %></small>
                 </div>
               <% } %>
-              <form role="form" action="/login" method="POST">
+              <form role="form" action="/login" method="POST" >
                 <% if (locals.messages && messages.errors && messages.errors.databaseError) { %>
                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <%= messages.errors.databaseError %>
@@ -47,6 +47,9 @@
                   </div>
                   <% if (locals.messages && messages.errors) { %>
                     <% Object.keys(messages.errors).filter(function(key) { return ['username', 'invalidEmailOrPassword', 'internalServerError'].includes(key); }).map(function(key) { %>
+                  <script>
+                    alert("please verify your credentials");
+                  </script>
                       <strong class="invalid-feedback" style="display: block">
                         <%= messages.errors[key] %>
                       </strong>
@@ -61,6 +64,7 @@
                     <input class="form-control" placeholder="Password" type="password" name="password">
                   </div>
                   <% if (locals.messages && messages.errors && messages.errors.password) { %>
+            
                     <strong class="invalid-feedback" style="display: block">
                       <%= messages.errors.password %>
                     </strong>
